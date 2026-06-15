@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .dot-grid {
+    background-image: radial-gradient(
+      rgba(148, 163, 184, 0.055) 1px,
+      transparent 1px
+    );
+    background-size: 24px 24px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background-color: #020617; /* slate-950 */
+  color: #cbd5e1; /* slate-300 */
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}

@@ -1,0 +1,67 @@
+const BASE_URL = process.env.PAYMENTS_APP_URL ?? 'https://proyecto-a-payments-driveme.vercel.app'
+
+function authHeaders(): HeadersInit {
+  return {
+    Authorization: `Bearer ${process.env.PAYMENTS_SERVICE_SECRET}`,
+    'Content-Type': 'application/json',
+  }
+}
+
+async function fetchOrThrow<T>(path: string): Promise<T> {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    headers: authHeaders(),
+    cache: 'no-store',
+  })
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  return res.json() as Promise<T>
+}
+
+export interface BancoCentral {
+  fondosEmpresa: number
+  fondosADebitar: number
+  fondosDebitadosHistorico: number
+  fechaActualizacion: string
+}
+
+export interface Billetera {
+  id: string
+  idConductor: string
+  montoPendiente: number
+  montoLiquidado: number
+  fechaActualizacion: string
+}
+
+export interface Transaccion {
+  id: string
+  idViaje: string
+  idPasajero: string
+  idConductor: string
+  metodoPago: 'EFECTIVO' | 'MERCADO_PAGO'
+  monto: string
+  estado: 'PENDIENTE' | 'CONFIRMADO' | 'CANCELADO'
+  estadoLiquidacion: 'PENDIENTE' | 'LIQUIDADO'
+  gatewayProvider: string | null
+  gatewayTransactionId: string | null
+  detalleGateway: string | null
+  fechaCreacion: string
+  fechaActualizacion: string
+}
+
+export interface User {
+  id: string
+  rol: 'RIDER' | 'DRIVER' | 'ADMIN'
+}
+
+export const getBancoCentral = () =>
+  fetchOrThrow<BancoCentral>('/api/pagos/admin/banco-central')
+
+export const getBilleteras = () =>
+  fetchOrThrow<Billetera[]>('/api/pagos/admin/billeteras')
+
+export const getTransacciones = (params: Record<string, string> = {}) => {
+  const qs = new URLSearchParams(params).toString()
+  return fetchOrThrow<Transaccion[]>(`/api/pagos/transacciones${qs ? `?${qs}` : ''}`)
+}
+
+export const getUsers = () =>
+  fetchOrThrow<User[]>('/api/pagos/admin/users')
