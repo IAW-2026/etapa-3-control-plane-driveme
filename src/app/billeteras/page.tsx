@@ -1,5 +1,6 @@
 import { getBilleteras } from '@/lib/services/payments'
 import { formatCurrency } from '@/lib/format'
+import { LiquidarButton } from './LiquidarButton'
 
 export default async function BilleterasPage() {
   const billeteras = await getBilleteras().catch(() => null)
@@ -19,9 +20,6 @@ export default async function BilleterasPage() {
             <thead>
               <tr className="border-b border-slate-700/50">
                 <th className="text-left px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">
-                  ID
-                </th>
-                <th className="text-left px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">
                   Conductor
                 </th>
                 <th className="text-right px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">
@@ -29,6 +27,9 @@ export default async function BilleterasPage() {
                 </th>
                 <th className="text-right px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">
                   Monto Liquidado
+                </th>
+                <th className="text-center px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">
+                  Acción
                 </th>
               </tr>
             </thead>
@@ -38,15 +39,19 @@ export default async function BilleterasPage() {
                   key={b.id}
                   className="border-b border-slate-800/50 last:border-0 hover:bg-slate-800/50 transition-colors"
                 >
-                  <td className="px-4 py-3 font-mono text-slate-500 text-xs">
-                    {b.id.length > 12 ? `${b.id.slice(0, 10)}…` : b.id}
-                  </td>
-                  <td className="px-4 py-3 text-slate-300">{b.idConductor}</td>
+                  <td className="px-4 py-3 font-mono text-slate-300 text-xs">{b.idConductor}</td>
                   <td className="px-4 py-3 text-right font-mono text-amber-400">
                     {formatCurrency(b.montoPendiente)}
                   </td>
                   <td className="px-4 py-3 text-right font-mono text-cyan-400">
                     {formatCurrency(b.montoLiquidado)}
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    {b.montoPendiente > 0 ? (
+                      <LiquidarButton idConductor={b.idConductor} />
+                    ) : (
+                      <span className="text-slate-600 text-xs">—</span>
+                    )}
                   </td>
                 </tr>
               ))}

@@ -65,3 +65,20 @@ export const getTransacciones = (params: Record<string, string> = {}) => {
 
 export const getUsers = () =>
   fetchOrThrow<User[]>('/api/pagos/admin/users')
+
+export interface Liquidacion {
+  id_liquidacion: string
+  monto_pagado: number
+  estado: string
+}
+
+export async function liquidarConductor(idConductor: string): Promise<Liquidacion> {
+  const res = await fetch(`${BASE_URL}/api/pagos/liquidaciones`, {
+    method: 'POST',
+    headers: { ...authHeaders() },
+    body: JSON.stringify({ id_conductor: idConductor }),
+    cache: 'no-store',
+  })
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  return res.json() as Promise<Liquidacion>
+}
