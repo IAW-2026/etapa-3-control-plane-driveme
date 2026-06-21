@@ -8,6 +8,10 @@ import {
   Wallet,
   Landmark,
   ChevronRight,
+  Car,
+  Map,
+  Menu,
+  X,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
@@ -37,6 +41,15 @@ const APPS: App[] = [
       { href: '/banco-central', label: 'Banco Central', Icon: Landmark },
     ],
   },
+  {
+    name: 'Driver App',
+    accentColor: 'text-violet-400',
+    dotColor: 'bg-violet-400',
+    routes: [
+      { href: '/conductores', label: 'Conductores', Icon: Car },
+      { href: '/viajes', label: 'Viajes', Icon: Map },
+    ],
+  },
 ]
 
 export function Sidebar() {
@@ -49,6 +62,13 @@ export function Sidebar() {
   const [openStates, setOpenStates] = useState<boolean[]>(() =>
     initialOpen.some(Boolean) ? initialOpen : APPS.map((_, i) => i === 0)
   )
+
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  // Cerrar sidebar en móvil cuando cambia la ruta
+  useEffect(() => {
+    setMobileOpen(false)
+  }, [pathname])
 
   useEffect(() => {
     setOpenStates((prev) =>
@@ -66,14 +86,36 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="fixed top-0 left-0 h-screen w-64 bg-slate-900/80 backdrop-blur-sm border-r border-slate-700/50 flex flex-col z-50">
-      {/* Logo */}
-      <div className="px-5 py-5 border-b border-slate-700/50 shrink-0">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-cyan-400/15 border border-cyan-400/25 flex items-center justify-center shrink-0">
-            <div className="w-2.5 h-2.5 rounded-sm bg-cyan-400" />
-          </div>
-          <span className="text-white font-semibold text-base tracking-tight">
+    <>
+      {/* Mobile Toggle Button */}
+      <button
+        onClick={() => setMobileOpen(!mobileOpen)}
+        className="md:hidden fixed top-5 left-5 z-[60] p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white border border-slate-700 shadow-lg"
+      >
+        {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+      </button>
+
+      {/* Mobile Overlay */}
+      {mobileOpen && (
+        <div 
+          className="md:hidden fixed inset-0 bg-black/60 z-[40] backdrop-blur-sm transition-opacity"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
+      <aside 
+        className={cn(
+          "fixed top-0 left-0 h-screen w-64 bg-slate-900/95 md:bg-slate-900/80 backdrop-blur-md border-r border-slate-700/50 flex flex-col z-50 transition-transform duration-300 ease-in-out",
+          mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        )}
+      >
+        {/* Logo */}
+        <div className="px-5 py-5 border-b border-slate-700/50 shrink-0 md:pl-5 pl-16">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-cyan-400/15 border border-cyan-400/25 flex items-center justify-center shrink-0">
+              <div className="w-2.5 h-2.5 rounded-sm bg-cyan-400" />
+            </div>
+            <span className="text-white font-semibold text-base tracking-tight">
             DriveMe Control
           </span>
         </div>
@@ -160,5 +202,6 @@ export function Sidebar() {
         <p className="text-xs text-slate-600">Control Plane · v1.0</p>
       </div>
     </aside>
+    </>
   )
 }
