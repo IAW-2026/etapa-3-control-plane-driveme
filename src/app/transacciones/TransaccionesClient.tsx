@@ -9,19 +9,19 @@ type EstadoFilter = 'TODOS' | 'PENDIENTE' | 'CONFIRMADO' | 'CANCELADO'
 const FILTERS: EstadoFilter[] = ['TODOS', 'PENDIENTE', 'CONFIRMADO', 'CANCELADO']
 
 const ESTADO_BADGE: Record<string, { label: string; cls: string }> = {
-  PENDIENTE:  { label: 'Pendiente',  cls: 'bg-amber-400/10 text-amber-400 border border-amber-400/20' },
-  CONFIRMADO: { label: 'Confirmado', cls: 'bg-cyan-400/10 text-cyan-400 border border-cyan-400/20' },
-  CANCELADO:  { label: 'Cancelado',  cls: 'bg-red-400/10 text-red-400 border border-red-400/20' },
+  PENDIENTE:  { label: 'PENDIENTE',  cls: 'bg-warning/10 text-warning border border-warning/30 shadow-[0_0_8px_rgba(217,119,6,0.3)] animate-pulse' },
+  CONFIRMADO: { label: 'CONFIRMADO', cls: 'bg-success/10 text-success border border-success/30' },
+  CANCELADO:  { label: 'CANCELADO',  cls: 'bg-primary/10 text-primary border border-primary/30' },
 }
 
 const LIQUIDACION_BADGE: Record<string, { label: string; cls: string }> = {
-  PENDIENTE: { label: 'Pendiente', cls: 'bg-amber-400/10 text-amber-400 border border-amber-400/20' },
-  LIQUIDADO: { label: 'Liquidado', cls: 'bg-emerald-400/10 text-emerald-400 border border-emerald-400/20' },
+  PENDIENTE: { label: 'PENDIENTE', cls: 'bg-warning/10 text-warning border border-warning/30 shadow-[0_0_8px_rgba(217,119,6,0.3)] animate-pulse' },
+  LIQUIDADO: { label: 'LIQUIDADO', cls: 'bg-success/10 text-success border border-success/30' },
 }
 
 const METODO_LABEL: Record<string, string> = {
-  EFECTIVO:     'Efectivo',
-  MERCADO_PAGO: 'Mercado Pago',
+  EFECTIVO:     'EFECTIVO',
+  MERCADO_PAGO: 'MERCADO PAGO',
 }
 
 export function TransaccionesClient({ transacciones }: { transacciones: Transaccion[] }) {
@@ -34,65 +34,65 @@ export function TransaccionesClient({ transacciones }: { transacciones: Transacc
     <div className="space-y-4">
       {/* Filter bar */}
       <div className="flex items-center gap-3 flex-wrap">
-        <span className="text-violet-400 text-xs font-semibold uppercase tracking-wider shrink-0">
-          Estado
+        <span className="section-label text-[10px] shrink-0">
+          ESTADO
         </span>
         <div className="flex gap-2 flex-wrap">
           {FILTERS.map((f) => (
             <button
               key={f}
               onClick={() => setFiltro(f)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+              className={`px-4 py-1.5 rounded-sm text-[10px] uppercase font-bold tracking-widest transition-all ${
                 filtro === f
-                  ? 'bg-slate-700 text-white'
-                  : 'bg-slate-900/80 text-slate-400 border border-slate-700/50 hover:bg-slate-800/50 hover:text-slate-200'
+                  ? 'bg-primary text-white shadow-[0_0_15px_rgba(220,38,38,0.3)] border border-primary'
+                  : 'bg-transparent text-text-muted border border-[rgba(255,255,255,0.1)] hover:border-primary hover:text-white'
               }`}
             >
-              {f === 'TODOS' ? 'Todos' : ESTADO_BADGE[f].label}
+              {f === 'TODOS' ? 'TODOS' : ESTADO_BADGE[f].label}
             </button>
           ))}
         </div>
-        <span className="ml-auto text-slate-500 text-sm shrink-0">
-          {filtered.length} resultado{filtered.length !== 1 ? 's' : ''}
+        <span className="ml-auto text-primary text-[10px] font-bold uppercase tracking-widest shrink-0">
+          {filtered.length} RESULTADO{filtered.length !== 1 ? 'S' : ''}
         </span>
       </div>
 
       {/* Table */}
-      <div className="bg-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-lg overflow-hidden">
+      <div className="card-brutalist overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm min-w-215">
+          <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-700/50">
-                <th className="text-left px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">Pasajero</th>
-                <th className="text-left px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">Conductor</th>
-                <th className="text-left px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">Método</th>
-                <th className="text-left px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">Fecha</th>
-                <th className="text-right px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">Monto</th>
-                <th className="text-center px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">Estado</th>
-                <th className="text-center px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">Liquidación</th>
+              <tr className="border-b border-[rgba(220,38,38,0.15)] bg-[rgba(20,20,20,0.5)]">
+                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Pasajero</th>
+                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Conductor</th>
+                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Método</th>
+                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Fecha</th>
+                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-right">Monto</th>
+                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-center">Estado</th>
+                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-center">Liquidación</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((t) => {
-                const estadoBadge = ESTADO_BADGE[t.estado] ?? { label: t.estado, cls: 'bg-slate-700/50 text-slate-300 border border-slate-600/50' }
-                const liqBadge = LIQUIDACION_BADGE[t.estadoLiquidacion] ?? { label: t.estadoLiquidacion, cls: 'bg-slate-700/50 text-slate-300 border border-slate-600/50' }
+                const estadoBadge = ESTADO_BADGE[t.estado] ?? { label: t.estado, cls: 'bg-[#141414] text-text-muted border border-[rgba(255,255,255,0.1)]' }
+                const liqBadge = LIQUIDACION_BADGE[t.estadoLiquidacion] ?? { label: t.estadoLiquidacion, cls: 'bg-[#141414] text-text-muted border border-[rgba(255,255,255,0.1)]' }
                 return (
                   <tr
                     key={t.id}
-                    className="border-b border-slate-800/50 last:border-0 hover:bg-slate-800/50 transition-colors"
+                    className="border-b border-[rgba(220,38,38,0.08)] last:border-0 hover:bg-[#141414] transition-colors"
                   >
-                    <td className="px-4 py-3 font-mono text-slate-400 text-xs">{t.idPasajero}</td>
-                    <td className="px-4 py-3 font-mono text-slate-400 text-xs">{t.idConductor}</td>
-                    <td className="px-4 py-3 text-slate-300 text-xs">{METODO_LABEL[t.metodoPago] ?? t.metodoPago}</td>
-                    <td className="px-4 py-3 text-slate-400 text-xs">{formatDate(t.fechaCreacion)}</td>
-                    <td className="px-4 py-3 text-right font-mono text-cyan-400">{formatCurrency(t.monto)}</td>
-                    <td className="px-4 py-3 text-center">
-                      <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${estadoBadge.cls}`}>
+                    <td className="p-3 font-mono text-text-primary text-xs uppercase font-bold tracking-widest">{t.idPasajero}</td>
+                    <td className="p-3 font-mono text-text-primary text-xs uppercase font-bold tracking-widest">{t.idConductor}</td>
+                    <td className="p-3 text-text-muted text-[10px] font-bold tracking-widest uppercase">{METODO_LABEL[t.metodoPago] ?? t.metodoPago}</td>
+                    <td className="p-3 text-text-primary text-xs uppercase tracking-widest whitespace-nowrap">{formatDate(t.fechaCreacion)}</td>
+                    <td className="p-3 text-right font-mono font-bold tracking-wider text-white whitespace-nowrap">{formatCurrency(t.monto)}</td>
+                    <td className="p-3 text-center whitespace-nowrap">
+                      <span className={`inline-flex px-2 py-1 rounded-sm text-[10px] uppercase tracking-widest font-bold ${estadoBadge.cls}`}>
                         {estadoBadge.label}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-center">
-                      <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${liqBadge.cls}`}>
+                    <td className="p-3 text-center whitespace-nowrap">
+                      <span className={`inline-flex px-2 py-1 rounded-sm text-[10px] uppercase tracking-widest font-bold ${liqBadge.cls}`}>
                         {liqBadge.label}
                       </span>
                     </td>
@@ -103,7 +103,7 @@ export function TransaccionesClient({ transacciones }: { transacciones: Transacc
           </table>
         </div>
         {filtered.length === 0 && (
-          <div className="py-10 text-center text-slate-500 text-sm">
+          <div className="py-10 text-center text-primary uppercase text-xs tracking-widest font-bold">
             No hay transacciones con el filtro seleccionado
           </div>
         )}

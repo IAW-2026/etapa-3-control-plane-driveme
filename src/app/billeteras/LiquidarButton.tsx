@@ -20,15 +20,15 @@ export function LiquidarButton({ idConductor }: { idConductor: string }) {
 
   if (result?.ok) {
     return (
-      <span className="text-emerald-400 text-xs font-mono">
-        +{formatCurrency(result.monto ?? 0)} liquidado
+      <span className="text-success text-[10px] font-bold tracking-widest uppercase bg-success/10 px-2 py-1 rounded-sm border border-success/30">
+        +{formatCurrency(result.monto ?? 0)} LIQUIDADO
       </span>
     )
   }
 
   if (result?.error) {
     return (
-      <span className="text-red-400 text-xs">{result.error}</span>
+      <span className="text-primary text-[10px] font-bold tracking-widest uppercase bg-primary/10 px-2 py-1 rounded-sm border border-primary/30">{result.error}</span>
     )
   }
 
@@ -36,9 +36,9 @@ export function LiquidarButton({ idConductor }: { idConductor: string }) {
     <button
       onClick={handleClick}
       disabled={isPending}
-      className="px-3 py-1 rounded text-xs font-medium bg-violet-500/15 text-violet-400 border border-violet-500/25 hover:bg-violet-500/25 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      className="btn-secondary border-primary/50 text-primary hover:bg-[rgba(220,38,38,0.1)] px-3 py-1.5 text-[10px] whitespace-nowrap font-bold tracking-widest disabled:opacity-50 disabled:cursor-not-allowed"
     >
-      {isPending ? 'Liquidando…' : 'Liquidar'}
+      {isPending ? 'LIQUIDANDO...' : 'LIQUIDAR'}
     </button>
   )
 }

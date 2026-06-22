@@ -24,21 +24,13 @@ export default function ToggleStatusButton({ idConductor, currentStatus, onToggl
     <button
       onClick={handleToggle}
       disabled={loading}
-      style={{
-        padding: '6px 12px',
-        borderRadius: '6px',
-        fontSize: '12px',
-        fontWeight: 600,
-        backgroundColor: currentStatus ? 'rgba(248, 113, 113, 0.1)' : 'rgba(52, 211, 153, 0.1)',
-        color: currentStatus ? '#f87171' : '#34d399',
-        border: `1px solid ${currentStatus ? 'rgba(248, 113, 113, 0.3)' : 'rgba(52, 211, 153, 0.3)'}`,
-        cursor: loading ? 'wait' : 'pointer',
-        transition: 'all 0.2s',
-        width: '105px',
-        textAlign: 'center',
-      }}
+      className={`btn-secondary px-3 py-1.5 text-[10px] whitespace-nowrap font-bold tracking-widest disabled:opacity-50 disabled:cursor-wait ${
+        currentStatus 
+          ? 'border-primary/50 text-primary hover:bg-[rgba(220,38,38,0.1)] hover:border-primary' 
+          : 'border-success/50 text-success hover:bg-[rgba(5,150,105,0.1)] hover:border-success'
+      }`}
     >
-      {loading ? '...' : currentStatus ? 'Bloquear' : 'Desbloquear'}
+      {loading ? '...' : currentStatus ? 'BLOQUEAR' : 'DESBLOQUEAR'}
     </button>
   )
 }

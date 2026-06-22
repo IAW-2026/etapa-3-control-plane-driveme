@@ -8,10 +8,11 @@ import {
   Wallet,
   Landmark,
   ChevronRight,
-  Car,
-  Map,
+  CarFront,
+  Route,
   Menu,
   X,
+  Crosshair
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
@@ -24,16 +25,12 @@ interface NavRoute {
 
 interface App {
   name: string
-  accentColor: string
-  dotColor: string
   routes: NavRoute[]
 }
 
 const APPS: App[] = [
   {
     name: 'Payments App',
-    accentColor: 'text-cyan-400',
-    dotColor: 'bg-cyan-400',
     routes: [
       { href: '/dashboard',     label: 'Dashboard',     Icon: LayoutDashboard },
       { href: '/transacciones', label: 'Transacciones', Icon: ArrowLeftRight },
@@ -43,11 +40,9 @@ const APPS: App[] = [
   },
   {
     name: 'Driver App',
-    accentColor: 'text-violet-400',
-    dotColor: 'bg-violet-400',
     routes: [
-      { href: '/conductores', label: 'Conductores', Icon: Car },
-      { href: '/viajes', label: 'Viajes', Icon: Map },
+      { href: '/conductores', label: 'Conductores', Icon: CarFront },
+      { href: '/viajes', label: 'Viajes', Icon: Route },
     ],
   },
 ]
@@ -65,7 +60,6 @@ export function Sidebar() {
 
   const [mobileOpen, setMobileOpen] = useState(false)
 
-  // Cerrar sidebar en móvil cuando cambia la ruta
   useEffect(() => {
     setMobileOpen(false)
   }, [pathname])
@@ -90,118 +84,111 @@ export function Sidebar() {
       {/* Mobile Toggle Button */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="md:hidden fixed top-5 left-5 z-[60] p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white border border-slate-700 shadow-lg"
+        className="md:hidden fixed top-5 left-5 z-[60] p-2 rounded-lg bg-[#0A0A0A] text-text-muted hover:text-white border border-[rgba(220,38,38,0.15)] shadow-[0_0_15px_rgba(220,38,38,0.1)] transition-all"
       >
-        {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+        {mobileOpen ? <X size={20} className="text-primary" /> : <Menu size={20} className="text-primary" />}
       </button>
 
       {/* Mobile Overlay */}
       {mobileOpen && (
         <div 
-          className="md:hidden fixed inset-0 bg-black/60 z-[40] backdrop-blur-sm transition-opacity"
+          className="md:hidden fixed inset-0 bg-[#050505]/90 z-[40] backdrop-blur-md transition-opacity"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
       <aside 
         className={cn(
-          "fixed top-0 left-0 h-screen w-64 bg-slate-900/95 md:bg-slate-900/80 backdrop-blur-md border-r border-slate-700/50 flex flex-col z-50 transition-transform duration-300 ease-in-out",
+          "fixed top-0 left-0 h-screen w-64 bg-[#0A0A0A] backdrop-blur-md border-r border-[rgba(220,38,38,0.15)] flex flex-col z-50 transition-transform duration-300 ease-in-out",
           mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
       >
         {/* Logo */}
-        <div className="px-5 py-5 border-b border-slate-700/50 shrink-0 md:pl-5 pl-16">
+        <div className="px-5 py-5 border-b border-[rgba(220,38,38,0.15)] shrink-0 md:pl-5 pl-16">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-cyan-400/15 border border-cyan-400/25 flex items-center justify-center shrink-0">
-              <div className="w-2.5 h-2.5 rounded-sm bg-cyan-400" />
+            <div className="w-8 h-8 rounded border border-primary flex items-center justify-center shrink-0 bg-[rgba(220,38,38,0.05)] shadow-[0_0_15px_rgba(220,38,38,0.2)]">
+              <Crosshair size={18} className="text-primary" />
             </div>
-            <span className="text-white font-semibold text-base tracking-tight">
-            DriveMe Control
-          </span>
+            <span className="text-white font-bold text-base tracking-widest uppercase">
+              DriveMe
+            </span>
+          </div>
         </div>
-      </div>
 
-      {/* Nav */}
-      <nav className="flex-1 px-3 py-4 overflow-y-auto">
-        <ul className="space-y-1">
-          {APPS.map((app, appIndex) => {
-            const isOpen = openStates[appIndex]
-            const hasActive = app.routes.some(
-              (r) => pathname === r.href || pathname.startsWith(r.href + '/')
-            )
+        {/* Nav */}
+        <nav className="flex-1 px-3 py-4 overflow-y-auto">
+          <ul className="space-y-4">
+            {APPS.map((app, appIndex) => {
+              const isOpen = openStates[appIndex]
+              const hasActive = app.routes.some(
+                (r) => pathname === r.href || pathname.startsWith(r.href + '/')
+              )
 
-            return (
-              <li key={app.name}>
-                {/* App header */}
-                <button
-                  onClick={() => toggleApp(appIndex)}
-                  className={cn(
-                    'w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-colors',
-                    hasActive
-                      ? 'bg-slate-800 text-white'
-                      : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
-                  )}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <div
+              return (
+                <li key={app.name}>
+                  {/* App header */}
+                  <button
+                    onClick={() => toggleApp(appIndex)}
+                    className={cn(
+                      'w-full flex items-center justify-between px-3 py-2 rounded-sm text-xs transition-colors section-label',
+                      hasActive
+                        ? 'text-primary'
+                        : 'text-text-muted hover:text-white'
+                    )}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <span className="font-bold tracking-[0.2em]">{app.name}</span>
+                    </div>
+                    <ChevronRight
+                      size={14}
+                      strokeWidth={2}
                       className={cn(
-                        'w-2 h-2 rounded-sm shrink-0',
-                        app.dotColor,
-                        !hasActive && 'opacity-50'
+                        'transition-transform duration-200 text-primary',
+                        isOpen && 'rotate-90'
                       )}
                     />
-                    <span className="font-medium">{app.name}</span>
-                  </div>
-                  <ChevronRight
-                    size={13}
-                    strokeWidth={2}
-                    className={cn(
-                      'transition-transform duration-200 text-slate-500',
-                      isOpen && 'rotate-90'
-                    )}
-                  />
-                </button>
+                  </button>
 
-                {/* Sub-routes */}
-                {isOpen && (
-                  <ul className="mt-0.5 ml-3 pl-3 border-l border-slate-700/60 space-y-0.5">
-                    {app.routes.map(({ href, label, Icon }) => {
-                      const active =
-                        pathname === href || pathname.startsWith(href + '/')
-                      return (
-                        <li key={href}>
-                          <Link
-                            href={href}
-                            className={cn(
-                              'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors',
-                              active
-                                ? 'bg-slate-800/80 text-white'
-                                : 'text-slate-500 hover:bg-slate-800/40 hover:text-slate-300'
-                            )}
-                          >
-                            <Icon
-                              size={13}
-                              strokeWidth={active ? 2 : 1.5}
-                              className={active ? app.accentColor : ''}
-                            />
-                            <span className={active ? 'text-white' : ''}>{label}</span>
-                          </Link>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                )}
-              </li>
-            )
-          })}
-        </ul>
-      </nav>
+                  {/* Sub-routes */}
+                  {isOpen && (
+                    <ul className="mt-2 ml-3 pl-3 border-l border-[rgba(220,38,38,0.15)] space-y-1">
+                      {app.routes.map(({ href, label, Icon }) => {
+                        const active =
+                          pathname === href || pathname.startsWith(href + '/')
+                        return (
+                          <li key={href}>
+                            <Link
+                              href={href}
+                              className={cn(
+                                'flex items-center gap-3 px-3 py-2.5 rounded-sm text-sm transition-all duration-150',
+                                active
+                                  ? 'bg-[rgba(220,38,38,0.08)] text-white border border-[rgba(220,38,38,0.3)] shadow-[0_0_15px_rgba(220,38,38,0.1)]'
+                                  : 'text-text-muted hover:bg-[#141414] hover:text-white border border-transparent'
+                              )}
+                            >
+                              <Icon
+                                size={14}
+                                strokeWidth={active ? 2 : 1.5}
+                                className={active ? 'text-primary' : 'text-text-muted'}
+                              />
+                              <span className={cn('tracking-wide', active ? 'text-white' : '')}>{label}</span>
+                            </Link>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+        </nav>
 
-      {/* Footer */}
-      <div className="px-5 py-4 border-t border-slate-700/50 shrink-0">
-        <p className="text-xs text-slate-600">Control Plane · v1.0</p>
-      </div>
-    </aside>
+        {/* Footer */}
+        <div className="px-5 py-4 border-t border-[rgba(220,38,38,0.15)] shrink-0">
+          <p className="text-[10px] uppercase tracking-widest text-primary/50">Control Plane // v1.0</p>
+        </div>
+      </aside>
     </>
   )
 }

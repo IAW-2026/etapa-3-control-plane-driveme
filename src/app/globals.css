@@ -1,12 +1,105 @@
 @import "tailwindcss";
 
+@theme {
+  --color-background: #050505;
+  --color-surface: #0A0A0A;
+  --color-surface-elevated: #141414;
+  --color-surface-hover: #1F1F1F;
+
+  --color-primary: #DC2626;
+  --color-primary-hover: #EF4444;
+  --color-primary-dark: #991B1B;
+
+  --color-secondary: #4B5563;
+  --color-secondary-hover: #6B7280;
+  --color-secondary-dark: #374151;
+
+  --color-accent: #FF0000;
+
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #9CA3AF;
+  --color-text-muted: #6B7280;
+
+  --color-success: #059669;
+  --color-warning: #D97706;
+  --color-error: #EF4444;
+  --color-info: #3B82F6;
+}
+
 @layer utilities {
-  .dot-grid {
-    background-image: radial-gradient(
-      rgba(148, 163, 184, 0.055) 1px,
-      transparent 1px
-    );
-    background-size: 24px 24px;
+  .atmospheric-bg {
+    background: radial-gradient(
+      circle at top center,
+      rgba(220, 38, 38, 0.08),
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(153, 27, 27, 0.05),
+      transparent 40%
+    ),
+    #050505;
+  }
+
+  .card-brutalist {
+    background: rgba(20, 20, 20, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(220, 38, 38, 0.15);
+    border-radius: 8px;
+    transition: all 150ms ease-in-out;
+  }
+  
+  .card-brutalist:hover {
+    transform: translateY(-2px);
+    border-color: rgba(220, 38, 38, 0.4);
+    box-shadow: 0 0 15px rgba(220, 38, 38, 0.1);
+  }
+
+  .input-brutalist {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    transition: all 150ms ease-in-out;
+  }
+
+  .input-brutalist:focus {
+    border-color: #DC2626;
+    box-shadow: 0 0 0 1px #DC2626, 0 0 15px rgba(220, 38, 38, 0.2);
+    outline: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(180deg, #EF4444, #DC2626);
+    color: white;
+    border: 1px solid #991B1B;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 150ms ease-in-out;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.08), 0 0 40px rgba(220, 38, 38, 0.04);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(156, 163, 175, 0.3);
+    color: #FFFFFF;
+    border-radius: 4px;
+    transition: all 150ms ease-in-out;
+  }
+
+  .btn-secondary:hover {
+    transform: translateY(-1px);
+    border-color: #DC2626;
+  }
+
+  .section-label {
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-primary);
   }
 }
 
@@ -23,8 +116,8 @@ html {
 
 body {
   height: 100%;
-  background-color: #020617; /* slate-950 */
-  color: #cbd5e1; /* slate-300 */
-  font-family: system-ui, -apple-system, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-michroma), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
 }

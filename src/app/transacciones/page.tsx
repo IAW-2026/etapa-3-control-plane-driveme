@@ -5,10 +5,10 @@ export default async function TransaccionesPage() {
   const transacciones = await getTransacciones().catch(() => null)
 
   return (
-    <div className="space-y-8 max-w-6xl">
+    <div className="space-y-8 max-w-6xl mx-auto">
       <div>
-        <h1 className="text-2xl font-semibold text-white">Transacciones</h1>
-        <p className="text-slate-400 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-white uppercase tracking-widest">Transacciones</h1>
+        <p className="text-primary text-sm mt-1 uppercase tracking-widest opacity-80">
           {transacciones
             ? `${transacciones.length} transacciones en total`
             : 'Error al cargar'}
@@ -18,7 +18,7 @@ export default async function TransaccionesPage() {
       {transacciones ? (
         <TransaccionesClient transacciones={transacciones} />
       ) : (
-        <div className="bg-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-lg p-8 text-center text-slate-500 text-sm">
+        <div className="card-brutalist p-8 text-center text-primary text-xs uppercase tracking-widest font-bold">
           No se pudieron cargar las transacciones
         </div>
       )}

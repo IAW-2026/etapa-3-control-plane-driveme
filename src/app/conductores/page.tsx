@@ -10,9 +10,9 @@ export default async function ConductoresPage(props: { searchParams: Promise<{ p
   const { conductores, total } = await getConductores(page, limit)
 
   return (
-    <div style={{ padding: '0 0 48px' }}>
+    <div className="pb-12 max-w-6xl mx-auto">
       <Topbar title="Gestión de Conductores" subtitle="Administración de cuentas y estados" />
-      <div style={{ padding: '0 32px', marginTop: '24px' }}>
+      <div className="mt-6">
         <ConductoresClient initialConductores={conductores} total={total} currentPage={page} />
       </div>
     </div>

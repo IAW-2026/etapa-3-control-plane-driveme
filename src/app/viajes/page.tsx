@@ -16,8 +16,8 @@ export default async function ViajesPage({ searchParams }: { searchParams: Promi
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-100 tracking-tight">Registro de Viajes</h1>
-          <p className="text-slate-400 text-sm mt-1">Historial completo de los viajes realizados en la plataforma.</p>
+          <h1 className="text-lg md:text-2xl font-bold text-white uppercase tracking-widest leading-tight">Registro de Viajes</h1>
+          <p className="text-primary text-[10px] md:text-sm mt-1 uppercase tracking-widest opacity-80 leading-relaxed">Historial completo de los viajes realizados en la plataforma.</p>
         </div>
       </div>
       

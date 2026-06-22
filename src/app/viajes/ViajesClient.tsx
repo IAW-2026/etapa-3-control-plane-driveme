@@ -1,26 +1,22 @@
 'use client'
 
-import { Viaje, cancelarViaje } from '@/lib/services/viajes'
-import { useState } from 'react'
+import { Viaje } from '@/lib/services/viajes'
+import { cancelarViajeAction } from './actions'
+import { useState, Fragment } from 'react'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 
 export default function ViajesClient({ initialViajes, total, currentPage }: { initialViajes: Viaje[], total: number, currentPage: number }) {
   const [viajes, setViajes] = useState<Viaje[]>(initialViajes)
   const [loadingId, setLoadingId] = useState<string | null>(null)
-  const card = {
-    backgroundColor: 'rgba(15, 23, 42, 0.8)',
-    border: '1px solid rgba(51, 65, 85, 0.5)',
-    borderRadius: '12px',
-    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-    overflow: 'hidden',
-  }
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
 
-  const getStatusColor = (status: string) => {
+  const getStatusClasses = (status: string) => {
     switch (status) {
-      case 'FINALIZADO': return { color: '#34d399', bg: 'rgba(52, 211, 153, 0.1)' }
-      case 'EN_CURSO': return { color: '#fbbf24', bg: 'rgba(251, 191, 36, 0.1)' }
+      case 'FINALIZADO': return 'text-success bg-[rgba(5,150,105,0.1)] border border-success/30'
+      case 'EN_CURSO': return 'text-warning bg-[rgba(217,119,6,0.1)] border border-warning/30 animate-pulse'
       case 'CANCELADO': 
-      case 'CANCELADO_POR_CONDUCTOR': return { color: '#f87171', bg: 'rgba(248, 113, 113, 0.1)' }
-      default: return { color: '#60a5fa', bg: 'rgba(96, 165, 250, 0.1)' } // ACEPTADO
+      case 'CANCELADO_POR_CONDUCTOR': return 'text-primary bg-[rgba(220,38,38,0.1)] border border-primary/30'
+      default: return 'text-info bg-[rgba(59,130,246,0.1)] border border-info/30' // ACEPTADO
     }
   }
 
@@ -37,7 +33,7 @@ export default function ViajesClient({ initialViajes, total, currentPage }: { in
     if (!confirm('¿Estás seguro de cancelar este viaje a la fuerza?')) return
     
     setLoadingId(id)
-    const success = await cancelarViaje(id)
+    const success = await cancelarViajeAction(id)
     if (success) {
       setViajes(prev => prev.map(v => v.id_viaje === id ? { ...v, estado_actual: 'CANCELADO_POR_CONDUCTOR' } : v))
     } else {
@@ -46,98 +42,139 @@ export default function ViajesClient({ initialViajes, total, currentPage }: { in
     setLoadingId(null)
   }
 
+  const toggleExpand = (id: string) => {
+    const newSet = new Set(expandedIds)
+    if (newSet.has(id)) newSet.delete(id)
+    else newSet.add(id)
+    setExpandedIds(newSet)
+  }
+
   return (
-    <div style={card}>
-      <div style={{ padding: '20px', borderBottom: '1px solid rgba(51, 65, 85, 0.5)' }}>
-        <h2 style={{ color: '#94a3b8', fontSize: '12px', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+    <div className="card-brutalist overflow-hidden">
+      <div className="p-5 border-b border-[rgba(220,38,38,0.15)] bg-[#0A0A0A]">
+        <h2 className="section-label text-xs">
           LISTA DE VIAJES ({total})
         </h2>
       </div>
 
-      <div style={{ overflowX: 'auto' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left border-collapse">
           <thead>
-            <tr style={{ borderBottom: '1px solid rgba(51, 65, 85, 0.5)' }}>
-              <th style={{ width: '10%', padding: '12px 16px', color: '#94a3b8', fontSize: '12px', whiteSpace: 'nowrap' }}>ID Viaje</th>
-              <th style={{ width: '15%', padding: '12px 16px', color: '#94a3b8', fontSize: '12px', whiteSpace: 'nowrap' }}>Fecha</th>
-              <th style={{ width: '20%', padding: '12px 16px', color: '#94a3b8', fontSize: '12px', whiteSpace: 'nowrap' }}>Conductor</th>
-              <th style={{ width: '25%', padding: '12px 16px', color: '#94a3b8', fontSize: '12px', whiteSpace: 'nowrap' }}>Ruta</th>
-              <th style={{ width: '10%', padding: '12px 16px', color: '#94a3b8', fontSize: '12px', whiteSpace: 'nowrap' }}>Monto</th>
-              <th style={{ width: '10%', padding: '12px 16px', color: '#94a3b8', fontSize: '12px', whiteSpace: 'nowrap' }}>Estado</th>
-              <th style={{ width: '10%', padding: '12px 16px', color: '#94a3b8', fontSize: '12px', whiteSpace: 'nowrap', textAlign: 'right' }}>Acciones</th>
+            <tr className="border-b border-[rgba(220,38,38,0.15)] bg-[rgba(20,20,20,0.5)]">
+              <th className="w-[15%] p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-left">ID Viaje</th>
+              <th className="w-[30%] p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-left">Conductor</th>
+              <th className="w-[15%] p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-center">Estado</th>
+              <th className="w-[15%] p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-center">Detalles</th>
+              <th className="w-[25%] p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-right">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {viajes.map((v) => {
               const displayId = v.id_viaje.length > 8 ? `${v.id_viaje.slice(0, 8)}...` : v.id_viaje;
-              const sColor = getStatusColor(v.estado_actual);
+              const sClasses = getStatusClasses(v.estado_actual);
+              const isExpanded = expandedIds.has(v.id_viaje);
+              const displayStatus = v.estado_actual.replace(/_/g, ' ');
+
               return (
-              <tr key={v.id_viaje} style={{ borderBottom: '1px solid rgba(51, 65, 85, 0.3)' }}>
-                <td style={{ padding: '12px 16px', color: '#e2e8f0', fontSize: '13px', fontFamily: 'monospace', verticalAlign: 'middle' }}>
-                  {displayId}
-                </td>
-                <td style={{ padding: '12px 16px', color: '#f8fafc', fontSize: '13px', verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
-                  {formatDate(v.creado_en)}
-                </td>
-                <td style={{ padding: '12px 16px', fontSize: '14px', verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
-                  {v.conductor ? (
-                    <span style={{ color: '#f8fafc' }}>{v.conductor.nombre} {v.conductor.apellido}</span>
-                  ) : (
-                    <span style={{ color: '#94a3b8', fontStyle: 'italic' }}>Sin conductor</span>
+                <Fragment key={v.id_viaje}>
+                  <tr className={`border-b border-[rgba(220,38,38,0.08)] hover:bg-[#141414] transition-colors ${isExpanded ? 'bg-[#141414]' : ''}`}>
+                    <td className="p-3 text-text-primary text-xs font-mono uppercase font-bold tracking-widest text-left align-middle">
+                      {displayId}
+                    </td>
+                    <td className="p-3 text-sm whitespace-nowrap text-left align-middle">
+                      {v.conductor ? (
+                        <span className="text-white font-bold tracking-widest uppercase text-xs">{v.conductor.nombre} {v.conductor.apellido}</span>
+                      ) : (
+                        <span className="text-text-muted italic uppercase text-xs tracking-widest">Sin conductor</span>
+                      )}
+                      {v.vehiculo && (
+                        <div className="text-text-muted text-[10px] uppercase tracking-widest mt-0.5">{v.vehiculo.patente}</div>
+                      )}
+                    </td>
+                    <td className="p-3 text-xs whitespace-nowrap text-center align-middle">
+                      <span className={`px-2 py-1 text-[10px] font-bold uppercase tracking-widest rounded-sm inline-block ${sClasses}`}>
+                        {displayStatus}
+                      </span>
+                    </td>
+                    <td className="p-3 text-center align-middle">
+                      <button
+                        onClick={() => toggleExpand(v.id_viaje)}
+                        className="btn-secondary border-info/50 text-info hover:bg-[rgba(59,130,246,0.1)] px-3 py-1.5 text-[10px] whitespace-nowrap font-bold inline-flex items-center justify-center gap-1 mx-auto"
+                      >
+                        {isExpanded ? (
+                          <><ChevronUp size={12} /> OCULTAR</>
+                        ) : (
+                          <><ChevronDown size={12} /> VER MÁS</>
+                        )}
+                      </button>
+                    </td>
+                    <td className="p-3 text-right">
+                      {(v.estado_actual === 'EN_CURSO' || v.estado_actual === 'ACEPTADO') && (
+                        <button
+                          onClick={() => handleCancel(v.id_viaje)}
+                          disabled={loadingId === v.id_viaje}
+                          className="btn-secondary border-primary/50 text-primary hover:bg-[rgba(220,38,38,0.1)] px-3 py-1.5 text-[10px] whitespace-nowrap font-bold"
+                        >
+                          {loadingId === v.id_viaje ? 'CANCELANDO...' : 'CANCELAR VIAJE'}
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                  {isExpanded && (
+                    <tr className="bg-[#0A0A0A] border-b border-[rgba(220,38,38,0.15)]">
+                      <td colSpan={5} className="p-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#141414] p-4 rounded-sm border border-[rgba(255,255,255,0.05)]">
+                          <div>
+                            <p className="text-text-muted text-[10px] font-bold tracking-widest uppercase mb-3 flex items-center gap-2">
+                              <span className="w-1.5 h-1.5 rounded-sm bg-info" />
+                              Información del Viaje
+                            </p>
+                            <div className="flex flex-col gap-2">
+                              <div className="flex justify-between items-center bg-[rgba(255,255,255,0.02)] p-2 rounded-sm border border-[rgba(255,255,255,0.05)] mb-2">
+                                <span className="text-text-muted text-[10px] uppercase tracking-widest font-bold">FECHA DE REGISTRO</span>
+                                <span className="text-white text-xs uppercase tracking-widest">
+                                  {formatDate(v.creado_en)}
+                                </span>
+                              </div>
+                              <div className="flex items-start gap-3">
+                                <span className="w-1.5 h-1.5 rounded-sm bg-info shadow-[0_0_8px_rgba(59,130,246,0.5)] shrink-0 mt-1" />
+                                <div>
+                                  <span className="text-text-muted text-[9px] uppercase tracking-widest block mb-0.5">ORIGEN</span>
+                                  <span className="text-white uppercase tracking-wider text-xs">{v.origen_direccion || 'Origen desconocido'}</span>
+                                </div>
+                              </div>
+                              <div className="h-4 border-l border-dashed border-[rgba(255,255,255,0.2)] ml-[3px]" />
+                              <div className="flex items-start gap-3">
+                                <span className="w-1.5 h-1.5 rounded-sm bg-primary shadow-[0_0_8px_rgba(220,38,38,0.8)] shrink-0 mt-1 animate-pulse" />
+                                <div>
+                                  <span className="text-text-muted text-[9px] uppercase tracking-widest block mb-0.5">DESTINO</span>
+                                  <span className="text-white uppercase tracking-wider text-xs">{v.destino_direccion || 'Destino desconocido'}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <p className="text-text-muted text-[10px] font-bold tracking-widest uppercase mb-3 flex items-center gap-2">
+                              <span className="w-1.5 h-1.5 rounded-sm bg-success" />
+                              Detalles Financieros
+                            </p>
+                            <div className="bg-[rgba(5,150,105,0.05)] border border-[rgba(5,150,105,0.2)] p-3 rounded-sm flex justify-between items-center">
+                              <span className="text-text-muted text-[10px] uppercase tracking-widest font-bold">MONTO FINAL</span>
+                              <span className="text-success text-lg font-bold whitespace-nowrap tracking-wider font-mono">
+                                {formatCurrency(v.precio_final)}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
                   )}
-                  {v.vehiculo && (
-                    <div style={{ color: '#94a3b8', fontSize: '11px', marginTop: '2px' }}>{v.vehiculo.patente}</div>
-                  )}
-                </td>
-                <td style={{ padding: '12px 16px', fontSize: '13px', verticalAlign: 'middle', maxWidth: '300px' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#60a5fa', flexShrink: 0 }} />
-                      <span style={{ color: '#e2e8f0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{v.origen_direccion || 'Origen desconocido'}</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ width: '8px', height: '8px', backgroundColor: '#f87171', flexShrink: 0 }} />
-                      <span style={{ color: '#e2e8f0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{v.destino_direccion || 'Destino desconocido'}</span>
-                    </div>
-                  </div>
-                </td>
-                <td style={{ padding: '12px 16px', color: '#f8fafc', fontSize: '14px', fontWeight: 600, verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
-                  {formatCurrency(v.precio_final)}
-                </td>
-                <td style={{ padding: '12px 16px', fontSize: '13px', verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
-                  <span style={{ color: sColor.color, backgroundColor: sColor.bg, padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 700, letterSpacing: '0.05em' }}>
-                    {v.estado_actual}
-                  </span>
-                </td>
-                <td style={{ padding: '12px 16px', verticalAlign: 'middle', textAlign: 'right' }}>
-                  {(v.estado_actual === 'EN_CURSO' || v.estado_actual === 'ACEPTADO') && (
-                    <button
-                      onClick={() => handleCancel(v.id_viaje)}
-                      disabled={loadingId === v.id_viaje}
-                      style={{
-                        backgroundColor: 'rgba(248, 113, 113, 0.1)',
-                        color: '#f87171',
-                        border: '1px solid rgba(248, 113, 113, 0.3)',
-                        padding: '6px 12px',
-                        borderRadius: '6px',
-                        fontSize: '12px',
-                        fontWeight: 600,
-                        cursor: loadingId === v.id_viaje ? 'wait' : 'pointer',
-                        transition: 'all 0.2s',
-                        whiteSpace: 'nowrap'
-                      }}
-                      onMouseOver={(e) => { if (loadingId !== v.id_viaje) e.currentTarget.style.backgroundColor = 'rgba(248, 113, 113, 0.2)' }}
-                      onMouseOut={(e) => { if (loadingId !== v.id_viaje) e.currentTarget.style.backgroundColor = 'rgba(248, 113, 113, 0.1)' }}
-                    >
-                      {loadingId === v.id_viaje ? 'Cancelando...' : 'Forzar Cancelación'}
-                    </button>
-                  )}
-                </td>
-              </tr>
-            )})}
+                </Fragment>
+              )
+            })}
             {viajes.length === 0 && (
               <tr>
-                <td colSpan={7} style={{ padding: '32px', textAlign: 'center', color: '#94a3b8' }}>No hay viajes registrados</td>
+                <td colSpan={5} className="p-8 text-center text-primary uppercase text-xs tracking-widest font-bold">No hay viajes registrados</td>
               </tr>
             )}
           </tbody>

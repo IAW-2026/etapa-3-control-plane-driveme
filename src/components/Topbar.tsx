@@ -5,53 +5,18 @@ interface TopbarProps {
 
 export default function Topbar({ title, subtitle }: TopbarProps) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '24px 32px 20px',
-        borderBottom: '1px solid rgba(51, 65, 85, 0.5)',
-        marginBottom: '28px',
-      }}
-    >
-      <div>
-        <h1
-          style={{
-            color: '#e2e8f0',
-            fontSize: '20px',
-            fontWeight: 600,
-            margin: 0,
-            letterSpacing: '-0.02em',
-          }}
-        >
+    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 mb-7 border-b border-[rgba(220,38,38,0.15)]">
+      <div className="min-w-0">
+        <h1 className="text-white text-lg md:text-xl font-bold uppercase tracking-[0.15em] m-0 leading-tight">
           {title}
         </h1>
-        <p style={{ color: '#64748b', fontSize: '13px', margin: '2px 0 0', letterSpacing: '0.01em' }}>
+        <p className="text-primary text-[10px] md:text-xs uppercase tracking-[0.2em] mt-1.5 opacity-80 leading-relaxed">
           {subtitle}
         </p>
       </div>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          color: '#a78bfa',
-          fontSize: '12px',
-          fontWeight: 500,
-        }}
-      >
-        <span
-          style={{
-            width: '7px',
-            height: '7px',
-            borderRadius: '50%',
-            backgroundColor: '#a78bfa',
-            boxShadow: '0 0 6px rgba(167, 139, 250, 0.6)',
-            animation: 'pulse 2s infinite',
-          }}
-        />
-        Live
+      <div className="flex items-center gap-2.5 text-primary text-xs font-bold uppercase tracking-widest shrink-0">
+        <span className="w-2 h-2 rounded-sm bg-primary shadow-[0_0_10px_rgba(220,38,38,0.8)] animate-pulse" />
+        LIVE
       </div>
     </div>
   )

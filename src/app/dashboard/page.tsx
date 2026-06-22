@@ -10,36 +10,35 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8 max-w-6xl">
       <div>
-        <h1 className="text-2xl font-semibold text-white">Dashboard</h1>
-        <p className="text-slate-400 text-sm mt-1">Métricas globales del sistema de pagos</p>
+        <h1 className="text-2xl font-bold text-white uppercase tracking-widest">Dashboard</h1>
+        <p className="text-text-muted text-sm mt-1 uppercase tracking-wider">Métricas globales del sistema de pagos</p>
       </div>
 
       {/* Metric Cards */}
       <section>
-        <p className="text-violet-400 text-xs font-semibold uppercase tracking-wider mb-4">
+        <p className="section-label text-xs mb-4">
           Banco Central
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <MetricCard label="Fondos Empresa" value={banco?.fondosEmpresa} accent="cyan" />
-          <MetricCard label="Fondos a Debitar" value={banco?.fondosADebitar} accent="violet" />
+          <MetricCard label="Fondos Empresa" value={banco?.fondosEmpresa} />
+          <MetricCard label="Fondos a Debitar" value={banco?.fondosADebitar} accent="danger" />
           <MetricCard
             label="Debitados Histórico"
             value={banco?.fondosDebitadosHistorico}
-            accent="cyan"
           />
         </div>
       </section>
 
       {/* Billeteras summary */}
       <section>
-        <p className="text-violet-400 text-xs font-semibold uppercase tracking-wider mb-4">
+        <p className="section-label text-xs mb-4">
           Billeteras — Vista Resumida
         </p>
         {billeteras ? (
-          <div className="bg-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-lg overflow-hidden">
+          <div className="card-brutalist overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-700/50">
+                <tr className="border-b border-[rgba(220,38,38,0.15)] bg-[rgba(20,20,20,0.5)]">
                   <Th>Conductor</Th>
                   <Th align="right">Pendiente</Th>
                   <Th align="right">Liquidado</Th>
@@ -49,15 +48,15 @@ export default async function DashboardPage() {
                 {billeteras.slice(0, 10).map((b) => (
                   <tr
                     key={b.id}
-                    className="border-b border-slate-800/50 last:border-0 hover:bg-slate-800/50 transition-colors"
+                    className="border-b border-[rgba(220,38,38,0.08)] last:border-0 hover:bg-[#141414] transition-colors"
                   >
-                    <td className="px-4 py-3 text-slate-300">
+                    <td className="px-4 py-3 text-text-primary uppercase tracking-wider text-xs font-bold">
                       {b.idConductor}
                     </td>
-                    <td className="px-4 py-3 text-right font-mono text-amber-400">
+                    <td className="px-4 py-3 text-right font-mono text-warning font-bold">
                       {formatCurrency(b.montoPendiente)}
                     </td>
-                    <td className="px-4 py-3 text-right font-mono text-cyan-400">
+                    <td className="px-4 py-3 text-right font-mono text-success font-bold">
                       {formatCurrency(b.montoLiquidado)}
                     </td>
                   </tr>
@@ -65,10 +64,10 @@ export default async function DashboardPage() {
               </tbody>
             </table>
             {billeteras.length > 10 && (
-              <div className="px-4 py-3 text-xs text-slate-500 border-t border-slate-800/50">
+              <div className="px-4 py-3 text-xs text-text-muted border-t border-[rgba(220,38,38,0.15)] uppercase tracking-widest text-center">
                 Mostrando 10 de {billeteras.length} billeteras —{' '}
-                <a href="/billeteras" className="text-cyan-400 hover:underline">
-                  ver todas
+                <a href="/billeteras" className="text-primary hover:text-primary-hover font-bold ml-1 transition-colors">
+                  VER TODAS
                 </a>
               </div>
             )}
@@ -84,20 +83,20 @@ export default async function DashboardPage() {
 function MetricCard({
   label,
   value,
-  accent,
+  accent = 'neutral',
 }: {
   label: string
   value?: number | null
-  accent: 'cyan' | 'violet'
+  accent?: 'neutral' | 'danger'
 }) {
   return (
-    <div className="bg-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-lg p-6">
-      <p className="text-violet-400 text-xs font-semibold uppercase tracking-wider mb-3">
+    <div className="card-brutalist p-6">
+      <p className="text-text-muted text-[10px] font-bold uppercase tracking-widest mb-3">
         {label}
       </p>
       <p
-        className={`font-mono text-2xl font-semibold ${
-          accent === 'cyan' ? 'text-cyan-400' : 'text-violet-400'
+        className={`font-mono text-2xl font-bold tracking-tight ${
+          accent === 'danger' ? 'text-primary' : 'text-white'
         }`}
       >
         {value != null ? formatCurrency(value) : '—'}
@@ -109,7 +108,7 @@ function MetricCard({
 function Th({ children, align = 'left' }: { children: React.ReactNode; align?: 'left' | 'right' }) {
   return (
     <th
-      className={`px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium text-${align}`}
+      className={`px-4 py-3 text-text-muted uppercase text-[10px] tracking-widest font-bold text-${align}`}
     >
       {children}
     </th>
@@ -118,7 +117,7 @@ function Th({ children, align = 'left' }: { children: React.ReactNode; align?: '
 
 function EmptyState({ message }: { message: string }) {
   return (
-    <div className="bg-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-lg p-8 text-center text-slate-500 text-sm">
+    <div className="card-brutalist p-8 text-center text-primary uppercase text-xs tracking-widest font-bold">
       {message}
     </div>
   )

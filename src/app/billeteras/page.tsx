@@ -6,29 +6,29 @@ export default async function BilleterasPage() {
   const billeteras = await getBilleteras().catch(() => null)
 
   return (
-    <div className="space-y-8 max-w-5xl">
+    <div className="space-y-8 max-w-5xl mx-auto">
       <div>
-        <h1 className="text-2xl font-semibold text-white">Billeteras</h1>
-        <p className="text-slate-400 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-white uppercase tracking-widest">Billeteras</h1>
+        <p className="text-primary text-sm mt-1 uppercase tracking-widest opacity-80">
           {billeteras ? `${billeteras.length} billeteras de conductores` : 'Error al cargar'}
         </p>
       </div>
 
       {billeteras ? (
-        <div className="bg-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-lg overflow-hidden">
-          <table className="w-full text-sm">
+        <div className="card-brutalist overflow-hidden">
+          <table className="w-full text-sm border-collapse text-left">
             <thead>
-              <tr className="border-b border-slate-700/50">
-                <th className="text-left px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">
+              <tr className="border-b border-[rgba(220,38,38,0.15)] bg-[rgba(20,20,20,0.5)]">
+                <th className="px-4 py-3 text-text-muted uppercase text-[10px] tracking-widest font-bold">
                   Conductor
                 </th>
-                <th className="text-right px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">
+                <th className="text-right px-4 py-3 text-text-muted uppercase text-[10px] tracking-widest font-bold">
                   Monto Pendiente
                 </th>
-                <th className="text-right px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">
+                <th className="text-right px-4 py-3 text-text-muted uppercase text-[10px] tracking-widest font-bold">
                   Monto Liquidado
                 </th>
-                <th className="text-center px-4 py-3 text-slate-400 uppercase text-xs tracking-wider font-medium">
+                <th className="text-center px-4 py-3 text-text-muted uppercase text-[10px] tracking-widest font-bold">
                   Acción
                 </th>
               </tr>
@@ -37,20 +37,20 @@ export default async function BilleterasPage() {
               {billeteras.map((b) => (
                 <tr
                   key={b.id}
-                  className="border-b border-slate-800/50 last:border-0 hover:bg-slate-800/50 transition-colors"
+                  className="border-b border-[rgba(220,38,38,0.08)] last:border-0 hover:bg-[#141414] transition-colors"
                 >
-                  <td className="px-4 py-3 font-mono text-slate-300 text-xs">{b.idConductor}</td>
-                  <td className="px-4 py-3 text-right font-mono text-amber-400">
+                  <td className="px-4 py-3 font-mono text-text-primary text-xs font-bold uppercase tracking-widest">{b.idConductor}</td>
+                  <td className="px-4 py-3 text-right font-mono text-warning font-bold tracking-wider">
                     {formatCurrency(b.montoPendiente)}
                   </td>
-                  <td className="px-4 py-3 text-right font-mono text-cyan-400">
+                  <td className="px-4 py-3 text-right font-mono text-success font-bold tracking-wider">
                     {formatCurrency(b.montoLiquidado)}
                   </td>
                   <td className="px-4 py-3 text-center">
                     {b.montoPendiente > 0 ? (
                       <LiquidarButton idConductor={b.idConductor} />
                     ) : (
-                      <span className="text-slate-600 text-xs">—</span>
+                      <span className="text-text-muted text-[10px] tracking-widest font-bold">—</span>
                     )}
                   </td>
                 </tr>
@@ -58,13 +58,13 @@ export default async function BilleterasPage() {
             </tbody>
           </table>
           {billeteras.length === 0 && (
-            <div className="py-8 text-center text-slate-500 text-sm">
+            <div className="py-8 text-center text-primary uppercase text-xs tracking-widest font-bold">
               No hay billeteras registradas
             </div>
           )}
         </div>
       ) : (
-        <div className="bg-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-lg p-8 text-center text-slate-500 text-sm">
+        <div className="card-brutalist p-8 text-center text-primary text-xs uppercase tracking-widest font-bold">
           No se pudieron cargar las billeteras
         </div>
       )}
