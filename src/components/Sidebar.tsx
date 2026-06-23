@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
+import { UserButton, useUser } from '@clerk/nextjs'
 
 interface NavRoute {
   href: string
@@ -56,6 +57,7 @@ const APPS: App[] = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const { user } = useUser()
 
   const initialOpen = APPS.map((app) =>
     app.routes.some((r) => pathname === r.href || pathname.startsWith(r.href + '/'))
@@ -192,8 +194,27 @@ export function Sidebar() {
         </nav>
 
         {/* Footer */}
-        <div className="px-5 py-4 border-t border-[rgba(220,38,38,0.15)] shrink-0">
-          <p className="text-[10px] uppercase tracking-widest text-primary/50">Control Plane // v1.0</p>
+        <div className="px-5 py-4 border-t border-[rgba(220,38,38,0.15)] shrink-0 space-y-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <UserButton
+              appearance={{
+                elements: {
+                  avatarBox: 'w-8 h-8 rounded border border-[rgba(220,38,38,0.3)] shadow-[0_0_10px_rgba(220,38,38,0.1)]',
+                  userButtonPopoverCard: 'bg-[#0A0A0A] border border-[rgba(220,38,38,0.15)] shadow-[0_0_30px_rgba(220,38,38,0.1)]',
+                  userButtonPopoverActionButton: 'text-text-muted hover:text-white hover:bg-[#141414]',
+                  userButtonPopoverActionButtonText: 'text-xs uppercase tracking-widest',
+                  userButtonPopoverFooter: 'hidden',
+                },
+              }}
+            />
+            <div className="flex flex-col min-w-0">
+              <span className="text-white text-xs font-bold truncate leading-tight">
+                {user?.fullName ?? user?.primaryEmailAddress?.emailAddress ?? '—'}
+              </span>
+              <span className="text-[10px] uppercase tracking-widest text-primary/60 leading-tight">Admin</span>
+            </div>
+          </div>
+          <p className="text-[10px] uppercase tracking-widest text-primary/30">Control Plane // v1.0</p>
         </div>
       </aside>
     </>

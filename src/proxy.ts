@@ -1,24 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { clerkMiddleware, createRouteMatcher, clerkClient } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
 
-export default function proxy(req: NextRequest) {
-  const auth = req.headers.get('authorization')
+const isPublic = createRouteMatcher(['/', '/unauthorized', '/api/webhooks(.*)'])
 
-  if (auth?.startsWith('Basic ')) {
-    const credentials = atob(auth.slice(6))
-    const password = credentials.slice(credentials.indexOf(':') + 1)
-    if (password === process.env.CONTROL_PLANE_PASSWORD) {
-      return NextResponse.next()
-    }
+export default clerkMiddleware(async (auth, req) => {
+  if (isPublic(req)) return
+
+  const { userId } = await auth.protect()
+
+  const client = await clerkClient()
+  const user = await client.users.getUser(userId)
+
+  if ((user.publicMetadata as { role?: string })?.role !== 'admin') {
+    return NextResponse.redirect(new URL('/unauthorized', req.url))
   }
-
-  return new NextResponse('Unauthorized', {
-    status: 401,
-    headers: {
-      'WWW-Authenticate': 'Basic realm="DriveMe Control Plane"',
-    },
-  })
-}
+})
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+  matcher: [
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    '/(api|trpc)(.*)',
+    '/__clerk/(.*)',
+  ],
 }
