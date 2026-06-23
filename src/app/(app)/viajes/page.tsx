@@ -1,6 +1,8 @@
 import { getViajes } from '@/lib/services/viajes'
 import ViajesClient from './ViajesClient'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Viajes - Control Plane',
 }

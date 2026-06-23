@@ -2,6 +2,8 @@ import Topbar from '@/components/Topbar'
 import { getConductores } from '@/lib/services/driver'
 import ConductoresClient from './ConductoresClient'
 
+export const dynamic = 'force-dynamic'
+
 export default async function ConductoresPage(props: { searchParams: Promise<{ page?: string }> }) {
   const params = await props.searchParams
   const page = Number(params?.page) || 1
