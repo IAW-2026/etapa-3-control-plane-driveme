@@ -1,4 +1,4 @@
-const BASE_URL = process.env.DRIVER_APP_URL || 'http://localhost:3000'
+const BASE_URL = (process.env.DRIVER_APP_URL || 'http://localhost:3000').replace(/\/$/, '')
 const TOKEN = process.env.CONTROL_PLANE_SECRET || ''
 
 export interface Vehiculo {

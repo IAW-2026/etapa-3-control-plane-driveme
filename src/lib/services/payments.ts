@@ -1,4 +1,4 @@
-const BASE_URL = process.env.PAYMENTS_APP_URL ?? 'https://proyecto-a-payments-driveme.vercel.app'
+const BASE_URL = (process.env.PAYMENTS_APP_URL ?? 'https://proyecto-a-payments-driveme.vercel.app').replace(/\/$/, '')
 
 function authHeaders(): HeadersInit {
   return {

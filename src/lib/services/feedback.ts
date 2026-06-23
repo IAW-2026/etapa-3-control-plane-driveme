@@ -1,8 +1,8 @@
-const BASE_URL = process.env.FEEDBACK_APP_URL ?? 'https://proyecto-a-feedback-driveme.vercel.app'
+const BASE_URL = (process.env.FEEDBACK_APP_URL ?? 'https://proyecto-a-feedback-driveme.vercel.app').replace(/\/$/, '')
 
 function authHeaders(): HeadersInit {
   return {
-    'x-api-key': process.env.CONTROL_PLANE_SECRET ?? '',
+    'x-api-key': process.env.FEEDBACK_SERVICE_SECRET ?? '',
     'Content-Type': 'application/json',
   }
 }
