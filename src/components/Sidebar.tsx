@@ -14,6 +14,7 @@ import {
   X,
   Crosshair,
   Flag,
+  Users,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
@@ -45,6 +46,12 @@ const APPS: App[] = [
     routes: [
       { href: '/conductores', label: 'Conductores', Icon: CarFront },
       { href: '/viajes', label: 'Viajes', Icon: Route },
+    ],
+  },
+  {
+    name: 'Rider App',
+    routes: [
+      { href: '/pasajeros', label: 'Pasajeros', Icon: Users },
     ],
   },
   {
