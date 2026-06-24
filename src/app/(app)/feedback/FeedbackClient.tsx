@@ -13,6 +13,19 @@ const MOTIVO_LABEL: Record<string, string> = {
 
 const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
 
+function StarRating({ puntaje }: { puntaje: number }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <div className="flex gap-0.5">
+        {[1, 2, 3, 4, 5].map(i => (
+          <span key={i} className={`text-sm ${i <= puntaje ? 'text-warning' : 'text-white/15'}`}>★</span>
+        ))}
+      </div>
+      <span className="text-text-muted text-[10px]">{puntaje} de 5</span>
+    </div>
+  )
+}
+
 function formatDate(s: string) {
   try {
     const d = new Date(s)
@@ -130,7 +143,7 @@ export default function FeedbackClient({
           {comentarios.map(c => (
             <div key={c.id_calificacion} className="p-4 hover:bg-[#141414] transition-colors space-y-3">
               <div className="flex items-start justify-between gap-3 flex-wrap">
-                <span className="text-warning font-bold font-mono text-xs">{c.puntaje}/5</span>
+                <StarRating puntaje={c.puntaje} />
                 <span className="text-text-muted text-xs whitespace-nowrap">
                   {formatDate(c.fecha)}
                 </span>
