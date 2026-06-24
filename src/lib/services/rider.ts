@@ -1,5 +1,5 @@
 const BASE_URL = (process.env.RIDER_APP_URL || '').replace(/\/$/, '')
-const TOKEN = process.env.RIDER_SERVICE_SECRET || ''
+const TOKEN = process.env.CONTROL_PLANE_SECRET || ''
 
 export interface Pasajero {
   id_pasajero: string

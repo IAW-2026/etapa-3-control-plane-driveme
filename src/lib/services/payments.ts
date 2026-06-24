@@ -2,7 +2,7 @@ const BASE_URL = (process.env.PAYMENTS_APP_URL ?? 'https://proyecto-a-payments-d
 
 function authHeaders(): HeadersInit {
   return {
-    Authorization: `Bearer ${process.env.PAYMENTS_SERVICE_SECRET}`,
+    Authorization: `Bearer ${process.env.CONTROL_PLANE_SECRET}`,
     'Content-Type': 'application/json',
   }
 }
