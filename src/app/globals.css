@@ -99,7 +99,7 @@
   .section-label {
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--color-primary);
+    color: var(--color-primary-hover);
   }
 }
 

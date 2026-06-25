@@ -12,7 +12,7 @@ export default function ViajesClient({ initialViajes, total, currentPage, curren
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
   const [searchValue, setSearchValue] = useState(currentSearch)
   const [estadoValue, setEstadoValue] = useState(currentEstado)
-  
+
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -25,10 +25,10 @@ export default function ViajesClient({ initialViajes, total, currentPage, curren
     const params = new URLSearchParams(searchParams.toString())
     if (newSearch) params.set('search', newSearch)
     else params.delete('search')
-    
+
     if (newEstado) params.set('estado', newEstado)
     else params.delete('estado')
-    
+
     params.set('page', page.toString())
     router.push(`${pathname}?${params.toString()}`)
   }
@@ -49,11 +49,11 @@ export default function ViajesClient({ initialViajes, total, currentPage, curren
 
   const getStatusClasses = (status: string) => {
     switch (status) {
-      case 'FINALIZADO': return 'text-success bg-[rgba(5,150,105,0.1)] border border-success/30'
-      case 'EN_CURSO': return 'text-warning bg-[rgba(217,119,6,0.1)] border border-warning/30 animate-pulse'
-      case 'CANCELADO': 
-      case 'CANCELADO_POR_CONDUCTOR': return 'text-primary bg-[rgba(220,38,38,0.1)] border border-primary/30'
-      default: return 'text-info bg-[rgba(59,130,246,0.1)] border border-info/30' // ACEPTADO
+      case 'FINALIZADO': return 'text-emerald-400 bg-[rgba(5,150,105,0.1)] border border-success/30'
+      case 'EN_CURSO': return 'text-amber-300 bg-[rgba(217,119,6,0.1)] border border-warning/30 animate-pulse'
+      case 'CANCELADO':
+      case 'CANCELADO_POR_CONDUCTOR': return 'text-red-400 bg-[rgba(220,38,38,0.1)] border border-primary/30'
+      default: return 'text-info bg-[rgba(59,130,246,0.1)] border border-info/30'
     }
   }
 
@@ -68,7 +68,7 @@ export default function ViajesClient({ initialViajes, total, currentPage, curren
 
   const handleCancel = async (id: string) => {
     if (!confirm('¿Estás seguro de cancelar este viaje a la fuerza?')) return
-    
+
     setLoadingId(id)
     const success = await cancelarViajeAction(id)
     if (success) {
@@ -92,28 +92,28 @@ export default function ViajesClient({ initialViajes, total, currentPage, curren
         <h2 className="section-label text-xs m-0">
           LISTA DE VIAJES ({total})
         </h2>
-        
+
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
-          <a 
-            href={process.env.NEXT_PUBLIC_DRIVER_APP_URL || 'http://localhost:3000'} 
-            target="_blank" 
+          <a
+            href={process.env.NEXT_PUBLIC_DRIVER_APP_URL || 'http://localhost:3000'}
+            target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 text-[10px] whitespace-nowrap font-bold tracking-widest bg-[linear-gradient(180deg,#EF4444,#DC2626)] border border-[#991B1B] rounded uppercase text-white hover:border-[#EF4444] transition-colors shadow-[0_0_15px_rgba(220,38,38,0.1)]"
           >
             <ExternalLink size={14} /> DRIVER APP
           </a>
           <form onSubmit={handleSearch} className="relative w-full sm:w-auto">
-            <input 
-              type="text" 
-              placeholder="Buscar ID, conductor..." 
+            <input
+              type="text"
+              placeholder="Buscar ID, conductor..."
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               className="w-full sm:w-64 bg-[#141414] border border-[rgba(255,255,255,0.1)] text-white text-xs px-3 py-2 pl-8 focus:outline-none focus:border-primary transition-colors"
             />
             <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted" />
           </form>
-          
-          <select 
+
+          <select
             value={estadoValue}
             onChange={handleEstadoChange}
             className="w-full sm:w-auto bg-[#141414] border border-[rgba(255,255,255,0.1)] text-white text-xs px-3 py-2 focus:outline-none focus:border-primary transition-colors"
@@ -139,7 +139,7 @@ export default function ViajesClient({ initialViajes, total, currentPage, curren
 
           return (
             <div key={v.id_viaje} className={`bg-[rgba(20,20,20,0.8)] backdrop-blur-md border border-[rgba(220,38,38,0.15)] rounded-lg p-5 flex flex-col gap-4 transition-all ${isExpanded ? 'border-[rgba(220,38,38,0.4)] shadow-[0_0_15px_rgba(220,38,38,0.1)]' : 'hover:-translate-y-0.5 hover:border-[rgba(220,38,38,0.4)] hover:shadow-[0_0_15px_rgba(220,38,38,0.1)]'}`}>
-              
+
               <div className="flex justify-between items-start border-b border-[rgba(255,255,255,0.05)] pb-3">
                 <div className="flex flex-col gap-1">
                   <span className="text-text-primary text-sm font-mono uppercase font-bold tracking-widest">{displayId}</span>
@@ -152,7 +152,7 @@ export default function ViajesClient({ initialViajes, total, currentPage, curren
                     <span className="text-text-muted text-[10px] uppercase tracking-widest">{v.vehiculo.patente}</span>
                   )}
                 </div>
-                
+
                 <div className="flex flex-col items-end gap-2 shrink-0">
                   <span className={`px-2 py-1 text-[9px] font-bold uppercase tracking-widest rounded inline-block ${sClasses}`}>
                     {displayStatus}
@@ -169,7 +169,7 @@ export default function ViajesClient({ initialViajes, total, currentPage, curren
                   )}
                 </div>
               </div>
-              
+
               <button
                 onClick={() => toggleExpand(v.id_viaje)}
                 className="bg-transparent border border-[rgba(156,163,175,0.3)] text-white hover:border-[#DC2626] rounded px-3 py-1.5 text-[10px] whitespace-nowrap font-bold tracking-widest flex items-center justify-center gap-2 transition-colors w-full"

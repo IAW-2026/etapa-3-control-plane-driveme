@@ -12,7 +12,7 @@ export default function ConductoresClient({ initialConductores, total, currentPa
   const [selectedConductor, setSelectedConductor] = useState<Conductor | null>(null)
   const [searchValue, setSearchValue] = useState(currentSearch)
   const [estadoValue, setEstadoValue] = useState(currentEstado)
-  
+
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -25,10 +25,10 @@ export default function ConductoresClient({ initialConductores, total, currentPa
     const params = new URLSearchParams(searchParams.toString())
     if (newSearch) params.set('search', newSearch)
     else params.delete('search')
-    
+
     if (newEstado) params.set('estado', newEstado)
     else params.delete('estado')
-    
+
     params.set('page', page.toString())
     router.push(`${pathname}?${params.toString()}`)
   }
@@ -77,28 +77,28 @@ export default function ConductoresClient({ initialConductores, total, currentPa
         <h2 className="section-label text-xs m-0">
           Lista de Conductores ({total})
         </h2>
-        
+
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
-          <a 
-            href={process.env.NEXT_PUBLIC_DRIVER_APP_URL || 'http://localhost:3000'} 
-            target="_blank" 
+          <a
+            href={process.env.NEXT_PUBLIC_DRIVER_APP_URL || 'http://localhost:3000'}
+            target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 text-[10px] whitespace-nowrap font-bold tracking-widest bg-[linear-gradient(180deg,#EF4444,#DC2626)] border border-[#991B1B] rounded uppercase text-white hover:border-[#EF4444] transition-colors shadow-[0_0_15px_rgba(220,38,38,0.1)]"
           >
             <ExternalLink size={14} /> DRIVER APP
           </a>
           <form onSubmit={handleSearch} className="relative w-full sm:w-auto">
-            <input 
-              type="text" 
-              placeholder="Buscar por nombre, ID..." 
+            <input
+              type="text"
+              placeholder="Buscar por nombre, ID..."
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               className="w-full sm:w-64 bg-[#141414] border border-[rgba(255,255,255,0.1)] text-white text-xs px-3 py-2 pl-8 focus:outline-none focus:border-primary transition-colors"
             />
             <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted" />
           </form>
-          
-          <select 
+
+          <select
             value={estadoValue}
             onChange={handleEstadoChange}
             className="w-full sm:w-auto bg-[#141414] border border-[rgba(255,255,255,0.1)] text-white text-xs px-3 py-2 focus:outline-none focus:border-primary transition-colors"
@@ -112,14 +112,14 @@ export default function ConductoresClient({ initialConductores, total, currentPa
           </select>
         </div>
       </div>
-      
+
       <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-[radial-gradient(circle_at_top_center,rgba(220,38,38,0.08),transparent_50%),radial-gradient(circle_at_bottom_right,rgba(153,27,27,0.05),transparent_40%),#050505]">
         {conductores.map((c) => {
           const shortId = c.id_conductor.split('_')[1] || c.id_conductor;
           const displayId = shortId.length > 10 ? `${shortId.slice(0, 5)}...${shortId.slice(-4)}` : shortId;
           return (
             <div key={c.id_conductor} className="bg-[rgba(20,20,20,0.8)] backdrop-blur-md border border-[rgba(220,38,38,0.15)] rounded-lg p-5 flex flex-col gap-4 hover:-translate-y-0.5 hover:border-[rgba(220,38,38,0.4)] hover:shadow-[0_0_15px_rgba(220,38,38,0.1)] transition-all">
-              
+
               <div className="flex justify-between items-start border-b border-[rgba(255,255,255,0.05)] pb-3">
                 <div>
                   <h3 className="text-white text-sm font-bold tracking-widest uppercase truncate max-w-[150px] sm:max-w-[180px]">{c.nombre} {c.apellido}</h3>
@@ -130,15 +130,15 @@ export default function ConductoresClient({ initialConductores, total, currentPa
                     <span className={`w-1.5 h-1.5 rounded-sm ${c.estado === 'DISPONIBLE' || c.estado === 'ONLINE' ? 'bg-success shadow-[0_0_8px_rgba(5,150,105,0.8)]' : c.estado === 'OCUPADO' ? 'bg-warning shadow-[0_0_8px_rgba(217,119,6,0.8)] animate-pulse' : 'bg-text-muted'}`} />
                     {c.estado}
                   </span>
-                  
+
                   {c.isActive ? (
-                    <span className="text-success bg-[rgba(5,150,105,0.1)] border border-[rgba(5,150,105,0.3)] px-2 py-1 rounded text-[9px] font-bold tracking-widest uppercase inline-block">CUENTA ACTIVA</span>
+                    <span className="text-emerald-400 bg-[rgba(5,150,105,0.1)] border border-[rgba(5,150,105,0.3)] px-2 py-1 rounded text-[9px] font-bold tracking-widest uppercase inline-block">CUENTA ACTIVA</span>
                   ) : (
-                    <span className="text-primary bg-[rgba(220,38,38,0.1)] border border-[rgba(220,38,38,0.3)] px-2 py-1 rounded text-[9px] font-bold tracking-widest uppercase inline-block">BLOQUEADA</span>
+                    <span className="text-red-400 bg-[rgba(220,38,38,0.1)] border border-[rgba(220,38,38,0.3)] px-2 py-1 rounded text-[9px] font-bold tracking-widest uppercase inline-block">BLOQUEADA</span>
                   )}
                 </div>
               </div>
-              
+
               <div className="flex items-center justify-between pt-1">
                 <button
                   onClick={() => setSelectedConductor(c)}
@@ -146,7 +146,7 @@ export default function ConductoresClient({ initialConductores, total, currentPa
                 >
                   <CarFront size={14} /> AUTOS ({c.vehiculos?.length || 0})
                 </button>
-                
+
                 <ToggleStatusButton idConductor={c.id_conductor} currentStatus={c.isActive} onToggle={handleToggle} />
               </div>
             </div>
@@ -182,9 +182,9 @@ export default function ConductoresClient({ initialConductores, total, currentPa
       </div>
 
       {selectedConductor && (
-        <VehiculosModal 
-          conductor={selectedConductor} 
-          onClose={() => setSelectedConductor(null)} 
+        <VehiculosModal
+          conductor={selectedConductor}
+          onClose={() => setSelectedConductor(null)}
           onToggleVehiculo={handleToggleVehiculo}
         />
       )}

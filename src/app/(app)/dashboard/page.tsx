@@ -1,19 +1,29 @@
+import { Suspense } from 'react'
 import { getBancoCentral, getBilleteras } from '@/lib/services/payments'
 import { formatCurrency } from '@/lib/format'
 
-export default async function DashboardPage() {
-  const [banco, billeteras] = await Promise.all([
-    getBancoCentral().catch(() => null),
-    getBilleteras().catch(() => null),
-  ])
-
+export default function DashboardPage() {
   return (
     <div className="space-y-8 max-w-6xl">
       <div>
         <h1 className="text-2xl font-bold text-white uppercase tracking-widest">Dashboard</h1>
         <p className="text-text-muted text-sm mt-1 uppercase tracking-wider">Métricas globales del sistema de pagos</p>
       </div>
+      <Suspense fallback={<Loading />}>
+        <DashboardData />
+      </Suspense>
+    </div>
+  )
+}
 
+async function DashboardData() {
+  const [banco, billeteras] = await Promise.all([
+    getBancoCentral().catch(() => null),
+    getBilleteras().catch(() => null),
+  ])
+
+  return (
+    <>
       {/* Metric Cards */}
       <section>
         <p className="section-label text-xs mb-4">
@@ -22,10 +32,7 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <MetricCard label="Fondos Empresa" value={banco?.fondosEmpresa} />
           <MetricCard label="Fondos a Debitar" value={banco?.fondosADebitar} accent="danger" />
-          <MetricCard
-            label="Debitados Histórico"
-            value={banco?.fondosDebitadosHistorico}
-          />
+          <MetricCard label="Debitados Histórico" value={banco?.fondosDebitadosHistorico} />
         </div>
       </section>
 
@@ -76,6 +83,14 @@ export default async function DashboardPage() {
           <EmptyState message="No se pudieron cargar las billeteras" />
         )}
       </section>
+    </>
+  )
+}
+
+function Loading() {
+  return (
+    <div className="card-brutalist p-8 text-center text-text-muted text-xs uppercase tracking-widest animate-pulse">
+      Cargando...
     </div>
   )
 }
@@ -108,7 +123,7 @@ function MetricCard({
 function Th({ children, align = 'left' }: { children: React.ReactNode; align?: 'left' | 'right' }) {
   return (
     <th
-      className={`px-4 py-3 text-text-muted uppercase text-[10px] tracking-widest font-bold text-${align}`}
+      className={`px-4 py-3 text-text-secondary uppercase text-[10px] tracking-widest font-bold text-${align}`}
     >
       {children}
     </th>

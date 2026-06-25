@@ -11,14 +11,29 @@ const MOTIVO_LABEL: Record<string, string> = {
   SPAM: 'Spam',
 }
 
+const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
+
+function StarRating({ puntaje }: { puntaje: number }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <div className="flex gap-0.5">
+        {[1, 2, 3, 4, 5].map(i => (
+          <span key={i} className={`text-sm ${i <= puntaje ? 'text-warning' : 'text-white/15'}`}>★</span>
+        ))}
+      </div>
+      <span className="text-text-secondary text-[10px]">{puntaje} de 5</span>
+    </div>
+  )
+}
+
 function formatDate(s: string) {
   try {
-    return new Intl.DateTimeFormat('es-AR', {
-      day: '2-digit',
-      month: 'short',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(new Date(s))
+    const d = new Date(s)
+    const dia = String(d.getDate()).padStart(2, '0')
+    const mes = MESES[d.getMonth()]
+    const hora = String(d.getHours()).padStart(2, '0')
+    const min = String(d.getMinutes()).padStart(2, '0')
+    return `${dia}-${mes}, ${hora}:${min}`
   } catch {
     return s
   }
@@ -67,65 +82,53 @@ export default function FeedbackClient({
             Reportes pendientes ({reportes.length})
           </h2>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-[rgba(220,38,38,0.15)] bg-[rgba(20,20,20,0.5)]">
-                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest">Motivo</th>
-                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest">Descripción</th>
-                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest">Reportante</th>
-                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest">Reportado</th>
-                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest">Fecha</th>
-                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest text-right">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {reportes.map(r => (
-                <tr key={r.id_reporte} className="border-b border-[rgba(220,38,38,0.08)] hover:bg-[#141414] transition-colors">
-                  <td className="p-3 text-white text-xs font-bold tracking-widest uppercase whitespace-nowrap">
-                    {MOTIVO_LABEL[r.motivo] ?? r.motivo}
-                  </td>
-                  <td className="p-3 text-text-muted text-xs max-w-xs truncate">
-                    {r.descripcion}
-                  </td>
-                  <td className="p-3 text-text-primary text-xs font-mono tracking-widest">
-                    {r.id_reportante}
-                  </td>
-                  <td className="p-3 text-text-primary text-xs font-mono tracking-widest">
-                    {r.id_reportado}
-                  </td>
-                  <td className="p-3 text-text-muted text-xs whitespace-nowrap">
-                    {formatDate(r.fecha)}
-                  </td>
-                  <td className="p-3">
-                    <div className="flex gap-2 justify-end">
-                      <button
-                        onClick={() => handleReporte(r.id_reporte, 'APROBADO')}
-                        disabled={loadingReporteId === r.id_reporte}
-                        className="btn-secondary border-success/50 text-success hover:bg-[rgba(5,150,105,0.1)] hover:border-success px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {loadingReporteId === r.id_reporte ? '...' : 'APROBAR'}
-                      </button>
-                      <button
-                        onClick={() => handleReporte(r.id_reporte, 'RECHAZADO')}
-                        disabled={loadingReporteId === r.id_reporte}
-                        className="btn-secondary border-primary/50 text-primary hover:bg-[rgba(220,38,38,0.1)] hover:border-primary px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {loadingReporteId === r.id_reporte ? '...' : 'RECHAZAR'}
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {reportes.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="p-8 text-center text-primary uppercase text-xs tracking-widest font-bold">
-                    Sin reportes pendientes
-                  </td>
-                </tr>
+        <div className="divide-y divide-[rgba(220,38,38,0.08)]">
+          {reportes.map(r => (
+            <div key={r.id_reporte} className="p-4 hover:bg-[#141414] transition-colors space-y-3">
+              <div className="flex items-start justify-between gap-3 flex-wrap">
+                <span className="text-white text-xs font-bold tracking-widest uppercase">
+                  {MOTIVO_LABEL[r.motivo] ?? r.motivo}
+                </span>
+                <span className="text-text-secondary text-xs whitespace-nowrap">
+                  {formatDate(r.fecha)}
+                </span>
+              </div>
+              {r.descripcion && (
+                <p className="text-text-secondary text-xs leading-relaxed">{r.descripcion}</p>
               )}
-            </tbody>
-          </table>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <p className="text-text-secondary text-[10px] uppercase tracking-widest mb-0.5">Reportante</p>
+                  <p className="text-text-primary text-xs font-mono break-all">{r.id_reportante}</p>
+                </div>
+                <div>
+                  <p className="text-text-secondary text-[10px] uppercase tracking-widest mb-0.5">Reportado</p>
+                  <p className="text-text-primary text-xs font-mono break-all">{r.id_reportado}</p>
+                </div>
+              </div>
+              <div className="flex gap-2 pt-1">
+                <button
+                  onClick={() => handleReporte(r.id_reporte, 'APROBADO')}
+                  disabled={loadingReporteId === r.id_reporte}
+                  className="btn-secondary border-success/50 text-success hover:bg-[rgba(5,150,105,0.1)] hover:border-success px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loadingReporteId === r.id_reporte ? '...' : 'ELIMINAR CALIFICACIÓN'}
+                </button>
+                <button
+                  onClick={() => handleReporte(r.id_reporte, 'RECHAZADO')}
+                  disabled={loadingReporteId === r.id_reporte}
+                  className="btn-secondary border-primary/50 text-primary hover:bg-[rgba(220,38,38,0.1)] hover:border-primary px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loadingReporteId === r.id_reporte ? '...' : 'MANTENER'}
+                </button>
+              </div>
+            </div>
+          ))}
+          {reportes.length === 0 && (
+            <p className="p-8 text-center text-primary uppercase text-xs tracking-widest font-bold">
+              Sin reportes pendientes
+            </p>
+          )}
         </div>
       </div>
 
@@ -136,65 +139,49 @@ export default function FeedbackClient({
             Comentarios marcados por IA ({comentarios.length})
           </h2>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-[rgba(220,38,38,0.15)] bg-[rgba(20,20,20,0.5)]">
-                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest">Comentario</th>
-                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest">Emisor</th>
-                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest">Receptor</th>
-                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest text-center">Puntaje</th>
-                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest">Fecha</th>
-                <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest text-right">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {comentarios.map(c => (
-                <tr key={c.id_calificacion} className="border-b border-[rgba(220,38,38,0.08)] hover:bg-[#141414] transition-colors">
-                  <td className="p-3 text-white text-xs max-w-xs">
-                    <span className="line-clamp-2">{c.comentario}</span>
-                  </td>
-                  <td className="p-3 text-text-primary text-xs font-mono tracking-widest">
-                    {c.id_emisor}
-                  </td>
-                  <td className="p-3 text-text-primary text-xs font-mono tracking-widest">
-                    {c.id_receptor}
-                  </td>
-                  <td className="p-3 text-center text-warning font-bold font-mono text-xs">
-                    {c.puntaje}/5
-                  </td>
-                  <td className="p-3 text-text-muted text-xs whitespace-nowrap">
-                    {formatDate(c.fecha)}
-                  </td>
-                  <td className="p-3">
-                    <div className="flex gap-2 justify-end">
-                      <button
-                        onClick={() => handleComentario(c.id_calificacion, 'APROBAR')}
-                        disabled={loadingComentarioId === c.id_calificacion}
-                        className="btn-secondary border-success/50 text-success hover:bg-[rgba(5,150,105,0.1)] hover:border-success px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {loadingComentarioId === c.id_calificacion ? '...' : 'APROBAR'}
-                      </button>
-                      <button
-                        onClick={() => handleComentario(c.id_calificacion, 'ELIMINAR')}
-                        disabled={loadingComentarioId === c.id_calificacion}
-                        className="btn-secondary border-primary/50 text-primary hover:bg-[rgba(220,38,38,0.1)] hover:border-primary px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {loadingComentarioId === c.id_calificacion ? '...' : 'ELIMINAR'}
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {comentarios.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="p-8 text-center text-primary uppercase text-xs tracking-widest font-bold">
-                    Sin comentarios marcados por IA
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+        <div className="divide-y divide-[rgba(220,38,38,0.08)]">
+          {comentarios.map(c => (
+            <div key={c.id_calificacion} className="p-4 hover:bg-[#141414] transition-colors space-y-3">
+              <div className="flex items-start justify-between gap-3 flex-wrap">
+                <StarRating puntaje={c.puntaje} />
+                <span className="text-text-secondary text-xs whitespace-nowrap">
+                  {formatDate(c.fecha)}
+                </span>
+              </div>
+              <p className="text-white text-xs leading-relaxed">{c.comentario}</p>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <p className="text-text-secondary text-[10px] uppercase tracking-widest mb-0.5">Emisor</p>
+                  <p className="text-text-primary text-xs font-mono break-all">{c.id_emisor}</p>
+                </div>
+                <div>
+                  <p className="text-text-secondary text-[10px] uppercase tracking-widest mb-0.5">Receptor</p>
+                  <p className="text-text-primary text-xs font-mono break-all">{c.id_receptor}</p>
+                </div>
+              </div>
+              <div className="flex gap-2 pt-1">
+                <button
+                  onClick={() => handleComentario(c.id_calificacion, 'APROBAR')}
+                  disabled={loadingComentarioId === c.id_calificacion}
+                  className="btn-secondary border-success/50 text-success hover:bg-[rgba(5,150,105,0.1)] hover:border-success px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loadingComentarioId === c.id_calificacion ? '...' : 'ELIMINAR CALIFICACIÓN'}
+                </button>
+                <button
+                  onClick={() => handleComentario(c.id_calificacion, 'ELIMINAR')}
+                  disabled={loadingComentarioId === c.id_calificacion}
+                  className="btn-secondary border-primary/50 text-primary hover:bg-[rgba(220,38,38,0.1)] hover:border-primary px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loadingComentarioId === c.id_calificacion ? '...' : 'MANTENER'}
+                </button>
+              </div>
+            </div>
+          ))}
+          {comentarios.length === 0 && (
+            <p className="p-8 text-center text-primary uppercase text-xs tracking-widest font-bold">
+              Sin comentarios marcados por IA
+            </p>
+          )}
         </div>
       </div>
     </div>

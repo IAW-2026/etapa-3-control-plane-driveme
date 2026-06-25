@@ -2,7 +2,7 @@ const BASE_URL = (process.env.PAYMENTS_APP_URL ?? 'https://proyecto-a-payments-d
 
 function authHeaders(): HeadersInit {
   return {
-    Authorization: `Bearer ${process.env.PAYMENTS_SERVICE_SECRET}`,
+    Authorization: `Bearer ${process.env.CONTROL_PLANE_SECRET}`,
     'Content-Type': 'application/json',
   }
 }
@@ -10,7 +10,7 @@ function authHeaders(): HeadersInit {
 async function fetchOrThrow<T>(path: string): Promise<T> {
   const res = await fetch(`${BASE_URL}${path}`, {
     headers: authHeaders(),
-    cache: 'no-store',
+    next: { revalidate: 30 },
   })
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   return res.json() as Promise<T>

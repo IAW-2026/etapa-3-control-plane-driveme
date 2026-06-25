@@ -30,7 +30,7 @@ export default function TogglePasajeroButton({ idPasajero, currentStatus, onTogg
           : 'border-success/50 text-success hover:bg-[rgba(5,150,105,0.1)] hover:border-success'
       }`}
     >
-      {loading ? '...' : currentStatus ? 'BLOQUEAR' : 'DESBLOQUEAR'}
+      {loading ? '...' : currentStatus ? 'DESACTIVAR' : 'ACTIVAR'}
     </button>
   )
 }
