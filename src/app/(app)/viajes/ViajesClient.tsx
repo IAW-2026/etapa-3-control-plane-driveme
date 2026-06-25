@@ -13,10 +13,10 @@ export default function ViajesClient({ initialViajes, total, currentPage }: { in
   const getStatusClasses = (status: string) => {
     switch (status) {
       case 'FINALIZADO': return 'text-success bg-[rgba(5,150,105,0.1)] border border-success/30'
-      case 'EN_CURSO': return 'text-warning bg-[rgba(217,119,6,0.1)] border border-warning/30 animate-pulse'
-      case 'CANCELADO': 
-      case 'CANCELADO_POR_CONDUCTOR': return 'text-primary bg-[rgba(220,38,38,0.1)] border border-primary/30'
-      default: return 'text-info bg-[rgba(59,130,246,0.1)] border border-info/30' // ACEPTADO
+      case 'EN_CURSO': return 'text-amber-300 bg-[rgba(217,119,6,0.1)] border border-warning/30 animate-pulse'
+      case 'CANCELADO':
+      case 'CANCELADO_POR_CONDUCTOR': return 'text-red-400 bg-[rgba(220,38,38,0.1)] border border-primary/30'
+      default: return 'text-info bg-[rgba(59,130,246,0.1)] border border-info/30'
     }
   }
 
@@ -61,11 +61,11 @@ export default function ViajesClient({ initialViajes, total, currentPage }: { in
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-[rgba(220,38,38,0.15)] bg-[rgba(20,20,20,0.5)]">
-              <th className="w-[15%] p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-left">ID Viaje</th>
-              <th className="w-[30%] p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-left">Conductor</th>
-              <th className="w-[15%] p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-center">Estado</th>
-              <th className="w-[15%] p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-center">Detalles</th>
-              <th className="w-[25%] p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-right">Acciones</th>
+              <th className="w-[15%] p-3 text-text-secondary text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-left">ID Viaje</th>
+              <th className="w-[30%] p-3 text-text-secondary text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-left">Conductor</th>
+              <th className="w-[15%] p-3 text-text-secondary text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-center">Estado</th>
+              <th className="w-[15%] p-3 text-text-secondary text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-center">Detalles</th>
+              <th className="w-[25%] p-3 text-text-secondary text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-right">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -85,10 +85,10 @@ export default function ViajesClient({ initialViajes, total, currentPage }: { in
                       {v.conductor ? (
                         <span className="text-white font-bold tracking-widest uppercase text-xs">{v.conductor.nombre} {v.conductor.apellido}</span>
                       ) : (
-                        <span className="text-text-muted italic uppercase text-xs tracking-widest">Sin conductor</span>
+                        <span className="text-text-secondary italic uppercase text-xs tracking-widest">Sin conductor</span>
                       )}
                       {v.vehiculo && (
-                        <div className="text-text-muted text-[10px] uppercase tracking-widest mt-0.5">{v.vehiculo.patente}</div>
+                        <div className="text-text-secondary text-[10px] uppercase tracking-widest mt-0.5">{v.vehiculo.patente}</div>
                       )}
                     </td>
                     <td className="p-3 text-xs whitespace-nowrap text-center align-middle">
@@ -125,13 +125,13 @@ export default function ViajesClient({ initialViajes, total, currentPage }: { in
                       <td colSpan={5} className="p-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#141414] p-4 rounded-sm border border-[rgba(255,255,255,0.05)]">
                           <div>
-                            <p className="text-text-muted text-[10px] font-bold tracking-widest uppercase mb-3 flex items-center gap-2">
+                            <p className="text-text-secondary text-[10px] font-bold tracking-widest uppercase mb-3 flex items-center gap-2">
                               <span className="w-1.5 h-1.5 rounded-sm bg-info" />
                               Información del Viaje
                             </p>
                             <div className="flex flex-col gap-2">
                               <div className="flex justify-between items-center bg-[rgba(255,255,255,0.02)] p-2 rounded-sm border border-[rgba(255,255,255,0.05)] mb-2">
-                                <span className="text-text-muted text-[10px] uppercase tracking-widest font-bold">FECHA DE REGISTRO</span>
+                                <span className="text-text-secondary text-[10px] uppercase tracking-widest font-bold">FECHA DE REGISTRO</span>
                                 <span className="text-white text-xs uppercase tracking-widest">
                                   {formatDate(v.creado_en)}
                                 </span>
@@ -139,7 +139,7 @@ export default function ViajesClient({ initialViajes, total, currentPage }: { in
                               <div className="flex items-start gap-3">
                                 <span className="w-1.5 h-1.5 rounded-sm bg-info shadow-[0_0_8px_rgba(59,130,246,0.5)] shrink-0 mt-1" />
                                 <div>
-                                  <span className="text-text-muted text-[9px] uppercase tracking-widest block mb-0.5">ORIGEN</span>
+                                  <span className="text-text-secondary text-[9px] uppercase tracking-widest block mb-0.5">ORIGEN</span>
                                   <span className="text-white uppercase tracking-wider text-xs">{v.origen_direccion || 'Origen desconocido'}</span>
                                 </div>
                               </div>
@@ -147,19 +147,19 @@ export default function ViajesClient({ initialViajes, total, currentPage }: { in
                               <div className="flex items-start gap-3">
                                 <span className="w-1.5 h-1.5 rounded-sm bg-primary shadow-[0_0_8px_rgba(220,38,38,0.8)] shrink-0 mt-1 animate-pulse" />
                                 <div>
-                                  <span className="text-text-muted text-[9px] uppercase tracking-widest block mb-0.5">DESTINO</span>
+                                  <span className="text-text-secondary text-[9px] uppercase tracking-widest block mb-0.5">DESTINO</span>
                                   <span className="text-white uppercase tracking-wider text-xs">{v.destino_direccion || 'Destino desconocido'}</span>
                                 </div>
                               </div>
                             </div>
                           </div>
                           <div>
-                            <p className="text-text-muted text-[10px] font-bold tracking-widest uppercase mb-3 flex items-center gap-2">
+                            <p className="text-text-secondary text-[10px] font-bold tracking-widest uppercase mb-3 flex items-center gap-2">
                               <span className="w-1.5 h-1.5 rounded-sm bg-success" />
                               Detalles Financieros
                             </p>
                             <div className="bg-[rgba(5,150,105,0.05)] border border-[rgba(5,150,105,0.2)] p-3 rounded-sm flex justify-between items-center">
-                              <span className="text-text-muted text-[10px] uppercase tracking-widest font-bold">MONTO FINAL</span>
+                              <span className="text-text-secondary text-[10px] uppercase tracking-widest font-bold">MONTO FINAL</span>
                               <span className="text-success text-lg font-bold whitespace-nowrap tracking-wider font-mono">
                                 {formatCurrency(v.precio_final)}
                               </span>

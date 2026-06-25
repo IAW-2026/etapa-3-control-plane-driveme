@@ -45,12 +45,12 @@ export default function ConductoresClient({ initialConductores, total, currentPa
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-[rgba(220,38,38,0.15)] bg-[rgba(20,20,20,0.5)]">
-              <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-left">ID Conductor</th>
-              <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-left">Nombre</th>
-              <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-left">Estado Operativo</th>
-              <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-center">Cuenta</th>
-              <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-center">Bloqueo</th>
-              <th className="p-3 text-text-muted text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-right">Vehículos</th>
+              <th className="p-3 text-text-secondary text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-left">ID Conductor</th>
+              <th className="p-3 text-text-secondary text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-left">Nombre</th>
+              <th className="p-3 text-text-secondary text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-left">Estado Operativo</th>
+              <th className="p-3 text-text-secondary text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-center">Cuenta</th>
+              <th className="p-3 text-text-secondary text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-center">Bloqueo</th>
+              <th className="p-3 text-text-secondary text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-right">Vehículos</th>
             </tr>
           </thead>
           <tbody>
@@ -64,7 +64,7 @@ export default function ConductoresClient({ initialConductores, total, currentPa
                 </td>
                 <td className="p-3 text-white text-xs font-bold tracking-widest uppercase whitespace-nowrap text-left align-middle">{c.nombre} {c.apellido}</td>
                 <td className="p-3 text-xs whitespace-nowrap text-left align-middle">
-                  <span className={`font-bold tracking-widest uppercase text-[10px] flex items-center gap-2 ${c.estado === 'DISPONIBLE' || c.estado === 'ONLINE' ? 'text-success' : c.estado === 'OCUPADO' ? 'text-warning' : 'text-text-muted'}`}>
+                  <span className={`font-bold tracking-widest uppercase text-[10px] flex items-center gap-2 ${c.estado === 'DISPONIBLE' || c.estado === 'ONLINE' ? 'text-success' : c.estado === 'OCUPADO' ? 'text-amber-300' : 'text-text-secondary'}`}>
                     <span className={`w-1.5 h-1.5 rounded-sm ${c.estado === 'DISPONIBLE' || c.estado === 'ONLINE' ? 'bg-success shadow-[0_0_8px_rgba(5,150,105,0.8)]' : c.estado === 'OCUPADO' ? 'bg-warning shadow-[0_0_8px_rgba(217,119,6,0.8)] animate-pulse' : 'bg-text-muted'}`} />
                     {c.estado}
                   </span>
@@ -73,7 +73,7 @@ export default function ConductoresClient({ initialConductores, total, currentPa
                   {c.isActive ? (
                     <span className="text-success bg-[rgba(5,150,105,0.1)] border border-[rgba(5,150,105,0.3)] px-2 py-1 rounded-sm text-[10px] font-bold tracking-widest uppercase inline-block">ACTIVA</span>
                   ) : (
-                    <span className="text-primary bg-[rgba(220,38,38,0.1)] border border-[rgba(220,38,38,0.3)] px-2 py-1 rounded-sm text-[10px] font-bold tracking-widest uppercase inline-block">BLOQUEADA</span>
+                    <span className="text-red-400 bg-[rgba(220,38,38,0.1)] border border-[rgba(220,38,38,0.3)] px-2 py-1 rounded-sm text-[10px] font-bold tracking-widest uppercase inline-block">BLOQUEADA</span>
                   )}
                 </td>
                 <td className="p-3 text-center align-middle">

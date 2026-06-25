@@ -1,44 +1,62 @@
+import { Suspense } from 'react'
 import { getBancoCentral } from '@/lib/services/payments'
 import { formatCurrency } from '@/lib/format'
 
-export default async function BancoCentralPage() {
-  const banco = await getBancoCentral().catch(() => null)
-
+export default function BancoCentralPage() {
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
       <div>
         <h1 className="text-2xl font-bold text-white uppercase tracking-widest">Banco Central</h1>
         <p className="text-primary text-sm mt-1 uppercase tracking-widest opacity-80">Estado detallado del fondo central de la empresa</p>
       </div>
+      <Suspense fallback={<Loading />}>
+        <BancoCentralData />
+      </Suspense>
+    </div>
+  )
+}
 
-      {banco ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <DetailCard
-            label="Fondos Empresa"
-            description="Balance total disponible en la cuenta empresa"
-            value={banco.fondosEmpresa}
-            accent="info"
-          />
-          <DetailCard
-            label="Fondos a Debitar"
-            description="Monto pendiente de debitarse a conductores"
-            value={banco.fondosADebitar}
-            accent="primary"
-          />
-          <div className="md:col-span-2">
-            <DetailCard
-              label="Fondos Debitados Histórico"
-              description="Total acumulado debitado desde el inicio del sistema"
-              value={banco.fondosDebitadosHistorico}
-              accent="success"
-            />
-          </div>
-        </div>
-      ) : (
-        <div className="card-brutalist p-8 text-center text-primary text-xs uppercase tracking-widest font-bold">
-          No se pudo cargar el estado del Banco Central
-        </div>
-      )}
+async function BancoCentralData() {
+  const banco = await getBancoCentral().catch(() => null)
+
+  if (!banco) {
+    return (
+      <div className="card-brutalist p-8 text-center text-primary text-xs uppercase tracking-widest font-bold">
+        No se pudo cargar el estado del Banco Central
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <DetailCard
+        label="Fondos Empresa"
+        description="Balance total disponible en la cuenta empresa"
+        value={banco.fondosEmpresa}
+        accent="info"
+      />
+      <DetailCard
+        label="Fondos a Debitar"
+        description="Monto pendiente de debitarse a conductores"
+        value={banco.fondosADebitar}
+        accent="primary"
+      />
+      <div className="md:col-span-2">
+        <DetailCard
+          label="Fondos Debitados Histórico"
+          description="Total acumulado debitado desde el inicio del sistema"
+          value={banco.fondosDebitadosHistorico}
+          accent="success"
+        />
+      </div>
+    </div>
+  )
+}
+
+function Loading() {
+  return (
+    <div className="card-brutalist p-8 text-center text-text-muted text-xs uppercase tracking-widest animate-pulse">
+      Cargando...
     </div>
   )
 }
@@ -69,7 +87,7 @@ function DetailCard({
         </p>
         <p className="text-text-muted text-xs uppercase tracking-wider opacity-80">{description}</p>
       </div>
-      <p className={`font-mono text-3xl font-bold shrink-0 text-white tracking-wider`}>
+      <p className="font-mono text-3xl font-bold shrink-0 text-white tracking-wider">
         {formatCurrency(value)}
       </p>
     </div>
