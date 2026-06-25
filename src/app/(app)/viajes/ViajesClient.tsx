@@ -6,7 +6,7 @@ import { useState, Fragment, useEffect } from 'react'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { ChevronDown, ChevronUp, Search, ChevronLeft, ChevronRight, X, ExternalLink } from 'lucide-react'
 
-export default function ViajesClient({ initialViajes, total, currentPage, currentSearch, currentEstado }: { initialViajes: Viaje[], total: number, currentPage: number, currentSearch: string, currentEstado: string }) {
+export default function ViajesClient({ initialViajes, total, currentPage, currentSearch, currentEstado, driverAppUrl }: { initialViajes: Viaje[], total: number, currentPage: number, currentSearch: string, currentEstado: string, driverAppUrl: string }) {
   const [viajes, setViajes] = useState<Viaje[]>(initialViajes)
   const [loadingId, setLoadingId] = useState<string | null>(null)
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
@@ -95,7 +95,7 @@ export default function ViajesClient({ initialViajes, total, currentPage, curren
 
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
           <a
-            href={process.env.NEXT_PUBLIC_DRIVER_APP_URL || 'http://localhost:3000'}
+            href={driverAppUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 text-[10px] whitespace-nowrap font-bold tracking-widest bg-[linear-gradient(180deg,#EF4444,#DC2626)] border border-[#991B1B] rounded uppercase text-white hover:border-[#EF4444] transition-colors shadow-[0_0_15px_rgba(220,38,38,0.1)]"
@@ -119,7 +119,6 @@ export default function ViajesClient({ initialViajes, total, currentPage, curren
             className="w-full sm:w-auto bg-[#141414] border border-[rgba(255,255,255,0.1)] text-white text-xs px-3 py-2 focus:outline-none focus:border-primary transition-colors"
           >
             <option value="">TODOS LOS ESTADOS</option>
-            <option value="BUSCANDO_CONDUCTOR">BUSCANDO CONDUCTOR</option>
             <option value="ACEPTADO">ACEPTADO</option>
             <option value="EN_CURSO">EN CURSO</option>
             <option value="FINALIZADO">FINALIZADO</option>
@@ -130,7 +129,7 @@ export default function ViajesClient({ initialViajes, total, currentPage, curren
       </div>
 
 
-      <div className="p-4 grid grid-cols-1 lg:grid-cols-2 gap-4 bg-[radial-gradient(circle_at_top_center,rgba(220,38,38,0.08),transparent_50%),radial-gradient(circle_at_bottom_right,rgba(153,27,27,0.05),transparent_40%),#050505]">
+      <div className="p-4 flex flex-col gap-4 bg-[radial-gradient(circle_at_top_center,rgba(220,38,38,0.08),transparent_50%),radial-gradient(circle_at_bottom_right,rgba(153,27,27,0.05),transparent_40%),#050505]">
         {viajes.map((v) => {
           const displayId = v.id_viaje.length > 8 ? `${v.id_viaje.slice(0, 8)}...` : v.id_viaje;
           const sClasses = getStatusClasses(v.estado_actual);

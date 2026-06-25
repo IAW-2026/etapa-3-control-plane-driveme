@@ -17,7 +17,7 @@ export default async function ConductoresPage(props: { searchParams: Promise<{ p
     <div className="pb-12 max-w-6xl mx-auto">
       <Topbar title="Gestión de Conductores" subtitle="Administración de cuentas y estados" />
       <div className="mt-6">
-        <ConductoresClient initialConductores={conductores} total={total} currentPage={page} currentSearch={search} currentEstado={estado} />
+        <ConductoresClient initialConductores={conductores} total={total} currentPage={page} currentSearch={search} currentEstado={estado} driverAppUrl={process.env.DRIVER_APP_URL || 'http://localhost:3000'} />
       </div>
     </div>
   )

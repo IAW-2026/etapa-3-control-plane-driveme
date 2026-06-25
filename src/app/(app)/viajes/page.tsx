@@ -25,7 +25,7 @@ export default async function ViajesPage({ searchParams }: { searchParams: Promi
         </div>
       </div>
       
-      <ViajesClient initialViajes={viajes} total={total} currentPage={page} currentSearch={search} currentEstado={estado} />
+      <ViajesClient initialViajes={viajes} total={total} currentPage={page} currentSearch={search} currentEstado={estado} driverAppUrl={process.env.DRIVER_APP_URL || 'http://localhost:3000'} />
     </div>
   )
 }

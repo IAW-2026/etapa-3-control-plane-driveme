@@ -7,7 +7,7 @@ import ToggleStatusButton from './ToggleStatusButton'
 import VehiculosModal from './VehiculosModal'
 import { Search, ChevronLeft, ChevronRight, ExternalLink, CarFront } from 'lucide-react'
 
-export default function ConductoresClient({ initialConductores, total, currentPage, currentSearch, currentEstado }: { initialConductores: Conductor[], total: number, currentPage: number, currentSearch: string, currentEstado: string }) {
+export default function ConductoresClient({ initialConductores, total, currentPage, currentSearch, currentEstado, driverAppUrl }: { initialConductores: Conductor[], total: number, currentPage: number, currentSearch: string, currentEstado: string, driverAppUrl: string }) {
   const [conductores, setConductores] = useState<Conductor[]>(initialConductores)
   const [selectedConductor, setSelectedConductor] = useState<Conductor | null>(null)
   const [searchValue, setSearchValue] = useState(currentSearch)
@@ -80,7 +80,7 @@ export default function ConductoresClient({ initialConductores, total, currentPa
 
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
           <a
-            href={process.env.NEXT_PUBLIC_DRIVER_APP_URL || 'http://localhost:3000'}
+            href={driverAppUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 text-[10px] whitespace-nowrap font-bold tracking-widest bg-[linear-gradient(180deg,#EF4444,#DC2626)] border border-[#991B1B] rounded uppercase text-white hover:border-[#EF4444] transition-colors shadow-[0_0_15px_rgba(220,38,38,0.1)]"
@@ -113,7 +113,7 @@ export default function ConductoresClient({ initialConductores, total, currentPa
         </div>
       </div>
 
-      <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-[radial-gradient(circle_at_top_center,rgba(220,38,38,0.08),transparent_50%),radial-gradient(circle_at_bottom_right,rgba(153,27,27,0.05),transparent_40%),#050505]">
+      <div className="p-4 flex flex-col gap-4 bg-[radial-gradient(circle_at_top_center,rgba(220,38,38,0.08),transparent_50%),radial-gradient(circle_at_bottom_right,rgba(153,27,27,0.05),transparent_40%),#050505]">
         {conductores.map((c) => {
           const shortId = c.id_conductor.split('_')[1] || c.id_conductor;
           const displayId = shortId.length > 10 ? `${shortId.slice(0, 5)}...${shortId.slice(-4)}` : shortId;
@@ -122,7 +122,7 @@ export default function ConductoresClient({ initialConductores, total, currentPa
 
               <div className="flex justify-between items-start border-b border-[rgba(255,255,255,0.05)] pb-3">
                 <div>
-                  <h3 className="text-white text-sm font-bold tracking-widest uppercase truncate max-w-[150px] sm:max-w-[180px]">{c.nombre} {c.apellido}</h3>
+                  <h3 className="text-white text-sm font-bold tracking-widest uppercase">{c.nombre} {c.apellido}</h3>
                   <span className="text-text-muted text-[10px] font-mono uppercase tracking-widest mt-1 block">ID: {displayId}</span>
                 </div>
                 <div className="flex flex-col items-end gap-2 shrink-0">
