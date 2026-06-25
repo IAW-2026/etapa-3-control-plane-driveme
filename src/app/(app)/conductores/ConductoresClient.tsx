@@ -101,6 +101,7 @@ export default function ConductoresClient({ initialConductores, total, currentPa
           <select
             value={estadoValue}
             onChange={handleEstadoChange}
+            aria-label="Filtrar por estado"
             className="w-full sm:w-auto bg-[#141414] border border-[rgba(255,255,255,0.1)] text-white text-xs px-3 py-2 focus:outline-none focus:border-primary transition-colors"
           >
             <option value="">TODOS LOS ESTADOS</option>
@@ -167,6 +168,7 @@ export default function ConductoresClient({ initialConductores, total, currentPa
           <button
             onClick={() => updateFilters(searchValue, estadoValue, currentPage - 1)}
             disabled={currentPage <= 1}
+            aria-label="Página anterior"
             className="btn-secondary p-1.5 disabled:opacity-50 disabled:cursor-not-allowed border-[rgba(255,255,255,0.1)] hover:bg-[#141414]"
           >
             <ChevronLeft size={16} />
@@ -174,6 +176,7 @@ export default function ConductoresClient({ initialConductores, total, currentPa
           <button
             onClick={() => updateFilters(searchValue, estadoValue, currentPage + 1)}
             disabled={currentPage >= totalPages}
+            aria-label="Página siguiente"
             className="btn-secondary p-1.5 disabled:opacity-50 disabled:cursor-not-allowed border-[rgba(255,255,255,0.1)] hover:bg-[#141414]"
           >
             <ChevronRight size={16} />

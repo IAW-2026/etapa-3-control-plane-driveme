@@ -26,6 +26,7 @@ export default function ToggleStatusButton({ idConductor, currentStatus, onToggl
       onClick={handleToggle}
       disabled={loading}
       title={currentStatus ? "Banear Conductor" : "Desbanear Conductor"}
+      aria-label={currentStatus ? "Banear Conductor" : "Desbanear Conductor"}
       className={`btn-secondary p-1.5 flex items-center justify-center mx-auto text-[10px] whitespace-nowrap font-bold tracking-widest disabled:opacity-50 disabled:cursor-wait ${
         currentStatus 
           ? 'border-primary/50 text-primary hover:bg-[rgba(220,38,38,0.1)] hover:border-primary' 
