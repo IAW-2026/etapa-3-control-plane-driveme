@@ -14,7 +14,7 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
           {subtitle}
         </p>
       </div>
-      <div className="flex items-center gap-2.5 text-primary text-xs font-bold uppercase tracking-widest shrink-0">
+      <div className="flex items-center gap-2.5 text-primary-hover text-xs font-bold uppercase tracking-widest shrink-0">
         <span className="w-2 h-2 rounded-sm bg-primary shadow-[0_0_10px_rgba(220,38,38,0.8)] animate-pulse" />
         LIVE
       </div>

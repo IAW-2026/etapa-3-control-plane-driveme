@@ -58,7 +58,7 @@ export default function PasajerosClient({
       {/* Header + search */}
       <div className="card-brutalist overflow-hidden">
         <div className="p-5 border-b border-[rgba(220,38,38,0.15)] bg-[#0A0A0A]">
-          <p className="text-[9px] font-bold tracking-[0.3em] text-text-muted uppercase mb-1">
+          <p className="text-[9px] font-bold tracking-[0.3em] text-text-secondary uppercase mb-1">
             RIDER APP // SECTOR CIVIL
           </p>
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -70,13 +70,13 @@ export default function PasajerosClient({
             </h2>
             <form onSubmit={handleSearch} className="flex gap-2 sm:ml-auto">
               <div className="relative">
-                <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted" />
+                <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-secondary" />
                 <input
                   type="text"
                   value={searchValue}
                   onChange={e => setSearchValue(e.target.value)}
                   placeholder="Nombre o email..."
-                  className="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.1)] rounded-sm pl-8 pr-3 py-1.5 text-[11px] text-white placeholder:text-text-muted tracking-wider focus:outline-none focus:border-primary focus:shadow-[0_0_0_1px_#DC2626] w-48"
+                  className="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.1)] rounded-sm pl-8 pr-3 py-1.5 text-[11px] text-white placeholder:text-text-secondary tracking-wider focus:outline-none focus:border-primary focus:shadow-[0_0_0_1px_#DC2626] w-48"
                 />
               </div>
               <button type="submit" className="btn-secondary px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase">
@@ -85,7 +85,7 @@ export default function PasajerosClient({
               {currentQ && (
                 <Link
                   href="/pasajeros?page=1"
-                  className="btn-secondary px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase text-text-muted"
+                  className="btn-secondary px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase text-text-secondary"
                 >
                   LIMPIAR
                 </Link>
@@ -112,17 +112,17 @@ export default function PasajerosClient({
                       {p.activo ? (
                         <span className="text-success bg-[rgba(5,150,105,0.1)] border border-[rgba(5,150,105,0.3)] px-2 py-0.5 rounded-sm text-[9px] font-bold tracking-widest uppercase">ACTIVA</span>
                       ) : (
-                        <span className="text-primary bg-[rgba(220,38,38,0.1)] border border-[rgba(220,38,38,0.3)] px-2 py-0.5 rounded-sm text-[9px] font-bold tracking-widest uppercase">BLOQUEADA</span>
+                        <span className="text-red-400 bg-[rgba(220,38,38,0.1)] border border-[rgba(220,38,38,0.3)] px-2 py-0.5 rounded-sm text-[9px] font-bold tracking-widest uppercase">BLOQUEADA</span>
                       )}
                     </div>
-                    <p className="text-text-muted text-xs tracking-wider truncate">{p.email}</p>
+                    <p className="text-text-secondary text-xs tracking-wider truncate">{p.email}</p>
                     <div className="flex items-center gap-3 mt-2 flex-wrap">
                       {rating && (
                         <span className="text-[10px] font-bold text-white tracking-wider">{rating} ★</span>
                       )}
-                      <span className="text-[10px] text-text-muted uppercase tracking-widest">Registro: {fechaStr}</span>
+                      <span className="text-[10px] text-text-secondary uppercase tracking-widest">Registro: {fechaStr}</span>
                       {p.telefono && (
-                        <span className="text-[10px] text-text-muted tracking-wider">{p.telefono}</span>
+                        <span className="text-[10px] text-text-secondary tracking-wider">{p.telefono}</span>
                       )}
                     </div>
                   </div>
@@ -149,7 +149,7 @@ export default function PasajerosClient({
         {totalPages > 1 && (
           <div className="p-4 border-t border-[rgba(220,38,38,0.15)] bg-[#0A0A0A] flex items-center justify-between gap-4">
             <PagLink href={buildPageUrl(searchParams, currentPage - 1)} disabled={currentPage <= 1} icon={<ChevronLeft size={12} />} label="ANTERIOR" iconLeft />
-            <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">
+            <span className="text-[10px] font-bold tracking-widest text-text-secondary uppercase">
               PÁGINA <span className="text-white">{currentPage}</span> / {totalPages}
             </span>
             <PagLink href={buildPageUrl(searchParams, currentPage + 1)} disabled={currentPage >= totalPages} icon={<ChevronRight size={12} />} label="SIGUIENTE" />
@@ -186,7 +186,7 @@ function MetricCard({ label, value, accent }: { label: string; value: number; ac
   }
   return (
     <div className={`card-brutalist p-4 border ${accent ? colors[accent] : 'border-[rgba(220,38,38,0.15)] bg-[#0A0A0A]'}`}>
-      <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-text-muted mb-1">{label}</p>
+      <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-text-secondary mb-1">{label}</p>
       <p className={`text-2xl font-bold font-mono ${accent ? '' : 'text-white'}`}>{value.toLocaleString()}</p>
     </div>
   )

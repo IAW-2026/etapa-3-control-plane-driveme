@@ -31,9 +31,9 @@ const ESTADO_STYLES: Record<string, string> = {
   PENDIENTE_PAGO: 'text-warning bg-[rgba(217,119,6,0.1)] border-warning/30',
   BUSCANDO_CONDUCTOR: 'text-info bg-[rgba(59,130,246,0.1)] border-info/30',
   ACEPTADA: 'text-success bg-[rgba(5,150,105,0.1)] border-success/30',
-  CANCELADA_POR_PASAJERO: 'text-primary bg-[rgba(220,38,38,0.1)] border-primary/30',
-  EXPIRADA_SIN_ACEPTACION: 'text-text-muted bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.1)]',
-  PAGO_RECHAZADO: 'text-primary bg-[rgba(220,38,38,0.1)] border-primary/30',
+  CANCELADA_POR_PASAJERO: 'text-red-400 bg-[rgba(220,38,38,0.1)] border-primary/30',
+  EXPIRADA_SIN_ACEPTACION: 'text-text-secondary bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.1)]',
+  PAGO_RECHAZADO: 'text-red-400 bg-[rgba(220,38,38,0.1)] border-primary/30',
 }
 
 interface Props {
@@ -121,13 +121,13 @@ export default function SolicitudesClient({
           </h2>
           <form onSubmit={handleSearch} className="flex gap-2 sm:ml-auto">
             <div className="relative">
-              <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted" />
+              <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-secondary" />
               <input
                 type="text"
                 value={searchValue}
                 onChange={e => setSearchValue(e.target.value)}
                 placeholder="Nombre o email..."
-                className="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.1)] rounded-sm pl-8 pr-3 py-1.5 text-[11px] text-white placeholder:text-text-muted tracking-wider focus:outline-none focus:border-primary focus:shadow-[0_0_0_1px_#DC2626] w-44"
+                className="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.1)] rounded-sm pl-8 pr-3 py-1.5 text-[11px] text-white placeholder:text-text-secondary tracking-wider focus:outline-none focus:border-primary focus:shadow-[0_0_0_1px_#DC2626] w-44"
               />
             </div>
             <button type="submit" className="btn-secondary px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase">
@@ -145,7 +145,7 @@ export default function SolicitudesClient({
               className={`px-3 py-1 text-[10px] font-bold tracking-widest uppercase rounded-sm border transition-colors ${
                 currentEstado === e
                   ? 'border-primary text-white bg-[rgba(220,38,38,0.1)]'
-                  : 'border-[rgba(255,255,255,0.1)] text-text-muted hover:border-primary/50 hover:text-white'
+                  : 'border-[rgba(255,255,255,0.1)] text-text-secondary hover:border-primary/50 hover:text-white'
               }`}
             >
               {e ? (ESTADO_LABELS[e] ?? e) : 'TODOS'}
@@ -163,27 +163,27 @@ export default function SolicitudesClient({
                 {/* Pasajero + estado */}
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-white text-sm font-bold tracking-widest uppercase">{s.pasajero.nombre}</span>
-                  <span className={`px-2 py-0.5 rounded-sm text-[9px] font-bold tracking-widest uppercase border ${ESTADO_STYLES[s.estado] ?? 'text-text-muted border-text-muted/30'}`}>
+                  <span className={`px-2 py-0.5 rounded-sm text-[9px] font-bold tracking-widest uppercase border ${ESTADO_STYLES[s.estado] ?? 'text-text-secondary border-text-muted/30'}`}>
                     {ESTADO_LABELS[s.estado] ?? s.estado}
                   </span>
                 </div>
-                <p className="text-text-muted text-xs tracking-wider">{s.pasajero.email}</p>
+                <p className="text-text-secondary text-xs tracking-wider">{s.pasajero.email}</p>
 
                 {/* Origen → Destino */}
                 <div className="flex items-start gap-2 text-[11px]">
                   <span className="w-1.5 h-1.5 rounded-sm bg-info shadow-[0_0_6px_rgba(59,130,246,0.6)] shrink-0 mt-1" />
-                  <span className="text-text-muted font-mono">{formatCoord(s.origen)}</span>
+                  <span className="text-text-secondary font-mono">{formatCoord(s.origen)}</span>
                 </div>
                 <div className="flex items-start gap-2 text-[11px]">
                   <span className="w-1.5 h-1.5 rounded-sm bg-primary shadow-[0_0_6px_rgba(220,38,38,0.6)] shrink-0 mt-1" />
-                  <span className="text-text-muted font-mono">{formatCoord(s.destino)}</span>
+                  <span className="text-text-secondary font-mono">{formatCoord(s.destino)}</span>
                 </div>
 
                 {/* Meta */}
                 <div className="flex items-center gap-3 flex-wrap">
                   <span className="text-white text-xs font-bold font-mono">{formatCurrency(s.precio_estimado)}</span>
-                  <span className="text-text-muted text-[10px] uppercase tracking-widest">{s.metodo_pago}</span>
-                  <span className="text-text-muted text-[10px] uppercase tracking-widest">{formatDate(s.creada_en)}</span>
+                  <span className="text-text-secondary text-[10px] uppercase tracking-widest">{s.metodo_pago}</span>
+                  <span className="text-text-secondary text-[10px] uppercase tracking-widest">{formatDate(s.creada_en)}</span>
                 </div>
               </div>
 
@@ -210,7 +210,7 @@ export default function SolicitudesClient({
       {totalPages > 1 && (
         <div className="p-4 border-t border-[rgba(220,38,38,0.15)] bg-[#0A0A0A] flex items-center justify-between gap-4">
           <PagLink href={buildPageUrl(searchParams, currentPage - 1)} disabled={currentPage <= 1} icon={<ChevronLeft size={12} />} label="ANTERIOR" iconLeft />
-          <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">
+          <span className="text-[10px] font-bold tracking-widest text-text-secondary uppercase">
             PÁGINA <span className="text-white">{currentPage}</span> / {totalPages}
           </span>
           <PagLink href={buildPageUrl(searchParams, currentPage + 1)} disabled={currentPage >= totalPages} icon={<ChevronRight size={12} />} label="SIGUIENTE" />
