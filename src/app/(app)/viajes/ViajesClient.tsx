@@ -12,7 +12,7 @@ export default function ViajesClient({ initialViajes, total, currentPage }: { in
 
   const getStatusClasses = (status: string) => {
     switch (status) {
-      case 'FINALIZADO': return 'text-success bg-[rgba(5,150,105,0.1)] border border-success/30'
+      case 'FINALIZADO': return 'text-emerald-400 bg-[rgba(5,150,105,0.1)] border border-success/30'
       case 'EN_CURSO': return 'text-amber-300 bg-[rgba(217,119,6,0.1)] border border-warning/30 animate-pulse'
       case 'CANCELADO':
       case 'CANCELADO_POR_CONDUCTOR': return 'text-red-400 bg-[rgba(220,38,38,0.1)] border border-primary/30'

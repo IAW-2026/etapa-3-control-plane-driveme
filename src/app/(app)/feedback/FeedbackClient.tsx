@@ -21,7 +21,7 @@ function StarRating({ puntaje }: { puntaje: number }) {
           <span key={i} className={`text-sm ${i <= puntaje ? 'text-warning' : 'text-white/15'}`}>★</span>
         ))}
       </div>
-      <span className="text-text-muted text-[10px]">{puntaje} de 5</span>
+      <span className="text-text-secondary text-[10px]">{puntaje} de 5</span>
     </div>
   )
 }
@@ -89,20 +89,20 @@ export default function FeedbackClient({
                 <span className="text-white text-xs font-bold tracking-widest uppercase">
                   {MOTIVO_LABEL[r.motivo] ?? r.motivo}
                 </span>
-                <span className="text-text-muted text-xs whitespace-nowrap">
+                <span className="text-text-secondary text-xs whitespace-nowrap">
                   {formatDate(r.fecha)}
                 </span>
               </div>
               {r.descripcion && (
-                <p className="text-text-muted text-xs leading-relaxed">{r.descripcion}</p>
+                <p className="text-text-secondary text-xs leading-relaxed">{r.descripcion}</p>
               )}
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <p className="text-text-muted text-[10px] uppercase tracking-widest mb-0.5">Reportante</p>
+                  <p className="text-text-secondary text-[10px] uppercase tracking-widest mb-0.5">Reportante</p>
                   <p className="text-text-primary text-xs font-mono break-all">{r.id_reportante}</p>
                 </div>
                 <div>
-                  <p className="text-text-muted text-[10px] uppercase tracking-widest mb-0.5">Reportado</p>
+                  <p className="text-text-secondary text-[10px] uppercase tracking-widest mb-0.5">Reportado</p>
                   <p className="text-text-primary text-xs font-mono break-all">{r.id_reportado}</p>
                 </div>
               </div>
@@ -144,18 +144,18 @@ export default function FeedbackClient({
             <div key={c.id_calificacion} className="p-4 hover:bg-[#141414] transition-colors space-y-3">
               <div className="flex items-start justify-between gap-3 flex-wrap">
                 <StarRating puntaje={c.puntaje} />
-                <span className="text-text-muted text-xs whitespace-nowrap">
+                <span className="text-text-secondary text-xs whitespace-nowrap">
                   {formatDate(c.fecha)}
                 </span>
               </div>
               <p className="text-white text-xs leading-relaxed">{c.comentario}</p>
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <p className="text-text-muted text-[10px] uppercase tracking-widest mb-0.5">Emisor</p>
+                  <p className="text-text-secondary text-[10px] uppercase tracking-widest mb-0.5">Emisor</p>
                   <p className="text-text-primary text-xs font-mono break-all">{c.id_emisor}</p>
                 </div>
                 <div>
-                  <p className="text-text-muted text-[10px] uppercase tracking-widest mb-0.5">Receptor</p>
+                  <p className="text-text-secondary text-[10px] uppercase tracking-widest mb-0.5">Receptor</p>
                   <p className="text-text-primary text-xs font-mono break-all">{c.id_receptor}</p>
                 </div>
               </div>

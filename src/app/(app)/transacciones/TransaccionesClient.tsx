@@ -11,13 +11,13 @@ const FILTERS: EstadoFilter[] = ['TODOS', 'PENDIENTE', 'CONFIRMADO', 'CANCELADO'
 
 const ESTADO_BADGE: Record<string, { label: string; cls: string }> = {
   PENDIENTE:  { label: 'PENDIENTE',  cls: 'bg-warning/10 text-amber-300 border border-warning/30 shadow-[0_0_8px_rgba(217,119,6,0.3)] animate-pulse' },
-  CONFIRMADO: { label: 'CONFIRMADO', cls: 'bg-success/10 text-success border border-success/30' },
+  CONFIRMADO: { label: 'CONFIRMADO', cls: 'bg-success/10 text-emerald-400 border border-success/30' },
   CANCELADO:  { label: 'CANCELADO',  cls: 'bg-primary/10 text-red-400 border border-primary/30' },
 }
 
 const LIQUIDACION_BADGE: Record<string, { label: string; cls: string }> = {
   PENDIENTE: { label: 'PENDIENTE', cls: 'bg-warning/10 text-amber-300 border border-warning/30 shadow-[0_0_8px_rgba(217,119,6,0.3)] animate-pulse' },
-  LIQUIDADO: { label: 'LIQUIDADO', cls: 'bg-success/10 text-success border border-success/30' },
+  LIQUIDADO: { label: 'LIQUIDADO', cls: 'bg-success/10 text-emerald-400 border border-success/30' },
 }
 
 const METODO_LABEL: Record<string, string> = {

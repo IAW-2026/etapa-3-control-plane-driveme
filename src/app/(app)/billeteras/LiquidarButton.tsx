@@ -20,7 +20,7 @@ export function LiquidarButton({ idConductor }: { idConductor: string }) {
 
   if (result?.ok) {
     return (
-      <span className="text-success text-[10px] font-bold tracking-widest uppercase bg-success/10 px-2 py-1 rounded-sm border border-success/30">
+      <span className="text-emerald-400 text-[10px] font-bold tracking-widest uppercase bg-success/10 px-2 py-1 rounded-sm border border-success/30">
         +{formatCurrency(result.monto ?? 0)} LIQUIDADO
       </span>
     )

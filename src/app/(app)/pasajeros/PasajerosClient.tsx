@@ -110,7 +110,7 @@ export default function PasajerosClient({
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       <span className="text-white text-sm font-bold tracking-widest uppercase">{p.nombre}</span>
                       {p.activo ? (
-                        <span className="text-success bg-[rgba(5,150,105,0.1)] border border-[rgba(5,150,105,0.3)] px-2 py-0.5 rounded-sm text-[9px] font-bold tracking-widest uppercase">ACTIVA</span>
+                        <span className="text-emerald-400 bg-[rgba(5,150,105,0.1)] border border-[rgba(5,150,105,0.3)] px-2 py-0.5 rounded-sm text-[9px] font-bold tracking-widest uppercase">ACTIVA</span>
                       ) : (
                         <span className="text-red-400 bg-[rgba(220,38,38,0.1)] border border-[rgba(220,38,38,0.3)] px-2 py-0.5 rounded-sm text-[9px] font-bold tracking-widest uppercase">BLOQUEADA</span>
                       )}

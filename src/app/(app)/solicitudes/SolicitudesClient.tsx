@@ -30,7 +30,7 @@ const ESTADO_LABELS: Record<string, string> = {
 const ESTADO_STYLES: Record<string, string> = {
   PENDIENTE_PAGO: 'text-warning bg-[rgba(217,119,6,0.1)] border-warning/30',
   BUSCANDO_CONDUCTOR: 'text-info bg-[rgba(59,130,246,0.1)] border-info/30',
-  ACEPTADA: 'text-success bg-[rgba(5,150,105,0.1)] border-success/30',
+  ACEPTADA: 'text-emerald-400 bg-[rgba(5,150,105,0.1)] border-success/30',
   CANCELADA_POR_PASAJERO: 'text-red-400 bg-[rgba(220,38,38,0.1)] border-primary/30',
   EXPIRADA_SIN_ACEPTACION: 'text-text-secondary bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.1)]',
   PAGO_RECHAZADO: 'text-red-400 bg-[rgba(220,38,38,0.1)] border-primary/30',

@@ -71,7 +71,7 @@ export default function ConductoresClient({ initialConductores, total, currentPa
                 </td>
                 <td className="p-3 text-xs whitespace-nowrap text-center align-middle">
                   {c.isActive ? (
-                    <span className="text-success bg-[rgba(5,150,105,0.1)] border border-[rgba(5,150,105,0.3)] px-2 py-1 rounded-sm text-[10px] font-bold tracking-widest uppercase inline-block">ACTIVA</span>
+                    <span className="text-emerald-400 bg-[rgba(5,150,105,0.1)] border border-[rgba(5,150,105,0.3)] px-2 py-1 rounded-sm text-[10px] font-bold tracking-widest uppercase inline-block">ACTIVA</span>
                   ) : (
                     <span className="text-red-400 bg-[rgba(220,38,38,0.1)] border border-[rgba(220,38,38,0.3)] px-2 py-1 rounded-sm text-[10px] font-bold tracking-widest uppercase inline-block">BLOQUEADA</span>
                   )}
