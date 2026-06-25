@@ -150,7 +150,7 @@ export function Sidebar() {
                       'w-full flex items-center justify-between px-3 py-2 rounded-sm text-xs transition-colors section-label',
                       hasActive
                         ? 'text-primary'
-                        : 'text-text-muted hover:text-white'
+                        : 'text-text-secondary hover:text-white'
                     )}
                   >
                     <div className="flex items-center gap-2.5">
@@ -180,13 +180,13 @@ export function Sidebar() {
                                 'flex items-center gap-3 px-3 py-2.5 rounded-sm text-sm transition-all duration-150',
                                 active
                                   ? 'bg-[rgba(220,38,38,0.08)] text-white border border-[rgba(220,38,38,0.3)] shadow-[0_0_15px_rgba(220,38,38,0.1)]'
-                                  : 'text-text-muted hover:bg-[#141414] hover:text-white border border-transparent'
+                                  : 'text-text-secondary hover:bg-[#141414] hover:text-white border border-transparent'
                               )}
                             >
                               <Icon
                                 size={14}
                                 strokeWidth={active ? 2 : 1.5}
-                                className={active ? 'text-primary' : 'text-text-muted'}
+                                className={active ? 'text-primary' : 'text-text-secondary'}
                               />
                               <span className={cn('tracking-wide', active ? 'text-white' : '')}>{label}</span>
                             </Link>
@@ -219,10 +219,10 @@ export function Sidebar() {
               <span className="text-white text-xs font-bold truncate leading-tight">
                 {user?.fullName ?? user?.primaryEmailAddress?.emailAddress ?? '—'}
               </span>
-              <span className="text-[10px] uppercase tracking-widest text-primary/60 leading-tight">Admin</span>
+              <span className="text-[10px] uppercase tracking-widest text-primary-hover leading-tight">Admin</span>
             </div>
           </div>
-          <p className="text-[10px] uppercase tracking-widest text-primary/30">Control Plane // v1.0</p>
+          <p className="text-[10px] uppercase tracking-widest text-text-secondary">Control Plane // v1.0</p>
         </div>
       </aside>
     </>
