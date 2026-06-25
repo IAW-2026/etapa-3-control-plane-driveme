@@ -23,9 +23,16 @@ export interface Conductor {
   vehiculos: Vehiculo[];
 }
 
-export async function getConductores(page = 1, limit = 20): Promise<{ conductores: Conductor[], total: number }> {
+export async function getConductores(page = 1, limit = 20, search = '', estado = ''): Promise<{ conductores: Conductor[], total: number }> {
   try {
-    const res = await fetch(`${BASE_URL}/api/admin/conductores?page=${page}&limit=${limit}`, {
+    const queryParams = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+    });
+    if (search) queryParams.append('search', search);
+    if (estado) queryParams.append('estado', estado);
+
+    const res = await fetch(`${BASE_URL}/api/admin/conductores?${queryParams.toString()}`, {
       headers: { 'x-api-key': TOKEN, 'Content-Type': 'application/json' },
       cache: 'no-store'
     })

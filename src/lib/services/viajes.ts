@@ -21,9 +21,16 @@ export interface Viaje {
   };
 }
 
-export async function getViajes(page = 1, limit = 20): Promise<{ viajes: Viaje[], total: number }> {
+export async function getViajes(page = 1, limit = 20, search = '', estado = ''): Promise<{ viajes: Viaje[], total: number }> {
   try {
-    const res = await fetch(`${BASE_URL}/api/admin/viajes?page=${page}&limit=${limit}`, {
+    const queryParams = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+    });
+    if (search) queryParams.append('search', search);
+    if (estado) queryParams.append('estado', estado);
+
+    const res = await fetch(`${BASE_URL}/api/admin/viajes?${queryParams.toString()}`, {
       headers: {
         'x-api-key': TOKEN,
       },

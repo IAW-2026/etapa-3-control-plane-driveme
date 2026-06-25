@@ -7,12 +7,14 @@ export const metadata = {
   title: 'Viajes - Control Plane',
 }
 
-export default async function ViajesPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+export default async function ViajesPage({ searchParams }: { searchParams: Promise<{ page?: string, search?: string, estado?: string }> }) {
   const resolvedParams = await searchParams;
   const page = Number(resolvedParams.page) || 1
+  const search = resolvedParams.search || ''
+  const estado = resolvedParams.estado || ''
   const limit = 20
   
-  const { viajes, total } = await getViajes(page, limit)
+  const { viajes, total } = await getViajes(page, limit, search, estado)
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -23,7 +25,7 @@ export default async function ViajesPage({ searchParams }: { searchParams: Promi
         </div>
       </div>
       
-      <ViajesClient initialViajes={viajes} total={total} currentPage={page} />
+      <ViajesClient initialViajes={viajes} total={total} currentPage={page} currentSearch={search} currentEstado={estado} />
     </div>
   )
 }

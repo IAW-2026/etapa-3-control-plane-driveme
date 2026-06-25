@@ -4,18 +4,20 @@ import ConductoresClient from './ConductoresClient'
 
 export const dynamic = 'force-dynamic'
 
-export default async function ConductoresPage(props: { searchParams: Promise<{ page?: string }> }) {
+export default async function ConductoresPage(props: { searchParams: Promise<{ page?: string, search?: string, estado?: string }> }) {
   const params = await props.searchParams
   const page = Number(params?.page) || 1
+  const search = params?.search || ''
+  const estado = params?.estado || ''
   const limit = 20
 
-  const { conductores, total } = await getConductores(page, limit)
+  const { conductores, total } = await getConductores(page, limit, search, estado)
 
   return (
     <div className="pb-12 max-w-6xl mx-auto">
       <Topbar title="Gestión de Conductores" subtitle="Administración de cuentas y estados" />
       <div className="mt-6">
-        <ConductoresClient initialConductores={conductores} total={total} currentPage={page} />
+        <ConductoresClient initialConductores={conductores} total={total} currentPage={page} currentSearch={search} currentEstado={estado} />
       </div>
     </div>
   )
