@@ -8,20 +8,32 @@ import { Solicitud } from '@/lib/services/rider'
 import { deleteSolicitudAction } from './actions'
 import ConfirmDialog from '@/components/ConfirmDialog'
 
-const ESTADOS = ['', 'BUSCANDO_CONDUCTOR', 'ACEPTADA', 'CANCELADA_POR_PASAJERO', 'EXPIRADA_SIN_ACEPTACION']
+const ESTADOS = [
+  '',
+  'PENDIENTE_PAGO',
+  'BUSCANDO_CONDUCTOR',
+  'ACEPTADA',
+  'CANCELADA_POR_PASAJERO',
+  'EXPIRADA_SIN_ACEPTACION',
+  'PAGO_RECHAZADO',
+]
 
 const ESTADO_LABELS: Record<string, string> = {
+  PENDIENTE_PAGO: 'PAGO PEND.',
   BUSCANDO_CONDUCTOR: 'BUSCANDO',
   ACEPTADA: 'ACEPTADA',
   CANCELADA_POR_PASAJERO: 'CANCELADA',
   EXPIRADA_SIN_ACEPTACION: 'EXPIRADA',
+  PAGO_RECHAZADO: 'PAGO RECH.',
 }
 
 const ESTADO_STYLES: Record<string, string> = {
-  BUSCANDO_CONDUCTOR: 'text-warning bg-[rgba(217,119,6,0.1)] border-warning/30',
-  ACEPTADA: 'text-info bg-[rgba(59,130,246,0.1)] border-info/30',
+  PENDIENTE_PAGO: 'text-warning bg-[rgba(217,119,6,0.1)] border-warning/30',
+  BUSCANDO_CONDUCTOR: 'text-info bg-[rgba(59,130,246,0.1)] border-info/30',
+  ACEPTADA: 'text-success bg-[rgba(5,150,105,0.1)] border-success/30',
   CANCELADA_POR_PASAJERO: 'text-primary bg-[rgba(220,38,38,0.1)] border-primary/30',
   EXPIRADA_SIN_ACEPTACION: 'text-text-muted bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.1)]',
+  PAGO_RECHAZADO: 'text-primary bg-[rgba(220,38,38,0.1)] border-primary/30',
 }
 
 interface Props {

@@ -24,6 +24,7 @@ export default async function PasajerosPage(props: { searchParams: Promise<{ pag
       <div className="mt-6">
         <RiderTabs />
         <PasajerosClient
+          key={`${page}-${q}`}
           initialPasajeros={pasajeros}
           total={total}
           currentPage={page}

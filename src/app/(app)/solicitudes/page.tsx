@@ -5,7 +5,7 @@ import SolicitudesClient from './SolicitudesClient'
 
 export const dynamic = 'force-dynamic'
 
-const ESTADOS = ['BUSCANDO_CONDUCTOR', 'ACEPTADA', 'CANCELADA_POR_PASAJERO', 'EXPIRADA_SIN_ACEPTACION']
+const ESTADOS = ['PENDIENTE_PAGO', 'BUSCANDO_CONDUCTOR', 'ACEPTADA', 'CANCELADA_POR_PASAJERO', 'EXPIRADA_SIN_ACEPTACION', 'PAGO_RECHAZADO']
 
 export default async function SolicitudesPage(props: {
   searchParams: Promise<{ page?: string; estado?: string; q?: string }>
@@ -25,6 +25,7 @@ export default async function SolicitudesPage(props: {
       <div className="mt-6">
         <RiderTabs />
         <SolicitudesClient
+          key={`${page}-${estado ?? ''}-${q}`}
           initialSolicitudes={solicitudes}
           total={total}
           currentPage={page}

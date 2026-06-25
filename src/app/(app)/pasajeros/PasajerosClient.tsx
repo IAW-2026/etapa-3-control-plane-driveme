@@ -3,11 +3,9 @@
 import { useState, useTransition } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ChevronLeft, ChevronRight, Search, Trash2 } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Search } from 'lucide-react'
 import { Pasajero, RiderMetricas } from '@/lib/services/rider'
 import TogglePasajeroButton from './TogglePasajeroButton'
-import { deletePasajeroAction } from './actions'
-import ConfirmDialog from '@/components/ConfirmDialog'
 
 interface Props {
   initialPasajeros: Pasajero[]
@@ -28,8 +26,6 @@ export default function PasajerosClient({
 }: Props) {
   const [pasajeros, setPasajeros] = useState<Pasajero[]>(initialPasajeros)
   const [searchValue, setSearchValue] = useState(currentQ)
-  const [pendingDelete, setPendingDelete] = useState<{ id: string; nombre: string } | null>(null)
-  const [deleteError, setDeleteError] = useState<string | null>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
   const [, startTransition] = useTransition()
@@ -38,45 +34,16 @@ export default function PasajerosClient({
     setPasajeros(prev => prev.map(p => p.id_pasajero === id ? { ...p, activo: newStatus } : p))
   }
 
-  const handleDelete = (id: string, nombre: string) => {
-    setPendingDelete({ id, nombre })
-  }
-
-  const confirmDelete = async () => {
-    if (!pendingDelete) return
-    const { id } = pendingDelete
-    const pasajeroToRestore = pasajeros.find(p => p.id_pasajero === id)
-    setPendingDelete(null)
-    setPasajeros(prev => prev.filter(p => p.id_pasajero !== id))
-    const ok = await deletePasajeroAction(id)
-    if (!ok) {
-      if (pasajeroToRestore) setPasajeros(prev => [...prev, pasajeroToRestore])
-      setDeleteError('No se pudo eliminar el pasajero. Intentá de nuevo.')
-    }
-  }
-
   const handleSearch = (e: { preventDefault(): void }) => {
     e.preventDefault()
     const params = new URLSearchParams(searchParams.toString())
-    if (searchValue.trim()) {
-      params.set('q', searchValue.trim())
-    } else {
-      params.delete('q')
-    }
+    if (searchValue.trim()) params.set('q', searchValue.trim())
+    else params.delete('q')
     params.set('page', '1')
     startTransition(() => router.push(`/pasajeros?${params}`))
   }
 
   return (
-    <>
-    <ConfirmDialog
-      open={!!pendingDelete}
-      title="ELIMINAR PASAJERO"
-      description={`¿Eliminar a ${pendingDelete?.nombre}? Se borrarán todos sus viajes, solicitudes y transacciones. Esta acción no se puede deshacer.`}
-      confirmLabel="ELIMINAR"
-      onConfirm={confirmDelete}
-      onCancel={() => setPendingDelete(null)}
-    />
     <div className="space-y-6">
       {/* Métricas */}
       {metricas?.pasajeros && (
@@ -127,14 +94,6 @@ export default function PasajerosClient({
           </div>
         </div>
 
-        {/* Error banner */}
-        {deleteError && (
-          <div className="mx-4 mt-3 px-4 py-2.5 rounded-sm border border-primary/40 bg-[rgba(220,38,38,0.08)] flex items-center justify-between gap-3">
-            <span className="text-primary text-[11px] font-bold tracking-wider uppercase">{deleteError}</span>
-            <button onClick={() => setDeleteError(null)} className="text-primary/60 hover:text-primary text-xs">✕</button>
-          </div>
-        )}
-
         {/* Cards */}
         <div className="divide-y divide-[rgba(220,38,38,0.08)]">
           {pasajeros.map(p => {
@@ -167,19 +126,12 @@ export default function PasajerosClient({
                       )}
                     </div>
                   </div>
-                  <div className="shrink-0 flex items-center gap-2">
+                  <div className="shrink-0">
                     <TogglePasajeroButton
                       idPasajero={p.id_pasajero}
                       currentStatus={p.activo}
                       onToggle={handleToggle}
                     />
-                    <button
-                      onClick={() => handleDelete(p.id_pasajero, p.nombre)}
-                      title="Eliminar pasajero"
-                      className="btn-secondary border-primary/40 text-primary hover:bg-[rgba(220,38,38,0.1)] hover:border-primary p-2"
-                    >
-                      <Trash2 size={14} />
-                    </button>
                   </div>
                 </div>
               </div>
@@ -196,27 +148,15 @@ export default function PasajerosClient({
         {/* Paginación */}
         {totalPages > 1 && (
           <div className="p-4 border-t border-[rgba(220,38,38,0.15)] bg-[#0A0A0A] flex items-center justify-between gap-4">
-            <PagLink
-              href={buildPageUrl(searchParams, currentPage - 1)}
-              disabled={currentPage <= 1}
-              icon={<ChevronLeft size={12} />}
-              label="ANTERIOR"
-              iconLeft
-            />
+            <PagLink href={buildPageUrl(searchParams, currentPage - 1)} disabled={currentPage <= 1} icon={<ChevronLeft size={12} />} label="ANTERIOR" iconLeft />
             <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">
               PÁGINA <span className="text-white">{currentPage}</span> / {totalPages}
             </span>
-            <PagLink
-              href={buildPageUrl(searchParams, currentPage + 1)}
-              disabled={currentPage >= totalPages}
-              icon={<ChevronRight size={12} />}
-              label="SIGUIENTE"
-            />
+            <PagLink href={buildPageUrl(searchParams, currentPage + 1)} disabled={currentPage >= totalPages} icon={<ChevronRight size={12} />} label="SIGUIENTE" />
           </div>
         )}
       </div>
     </div>
-    </>
   )
 }
 
@@ -233,9 +173,7 @@ function PagLink({ href, disabled, icon, label, iconLeft }: { href: string; disa
       aria-disabled={disabled}
       className={`btn-secondary px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase inline-flex items-center gap-1.5 ${disabled ? 'opacity-30 pointer-events-none' : ''}`}
     >
-      {iconLeft && icon}
-      {label}
-      {!iconLeft && icon}
+      {iconLeft && icon}{label}{!iconLeft && icon}
     </Link>
   )
 }
